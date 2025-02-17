@@ -5,6 +5,11 @@
   src: url("./assets/fonts/GothicA1-Light.ttf");
 }
 
+@font-face {
+  font-family: Fredoka;
+  src: url("./assets/fonts/Fredoka-SemiBold.ttf");
+}
+
 body {
   @apply
     bg-[url('/pastel-background.jpg')]
@@ -17,4 +22,5 @@ body {
 
 @theme {
   --font-gothic: "Gothic A1", sans-serif;
+  --font-fredoka: "Fredoka", sans-serif;
 }
