@@ -12,15 +12,26 @@ function App() {
                     <p>[ WIP: Pomodoro Timer container + bottom buttons ]</p>
                 </div>
 
-                <a
-                    id="github-link"
-                    href="https://github.com/mjgalarza1/simply-another-pomodoro-timer"
-                    target="_blank"
-                    className="fixed p-2 bottom-0 left-0 rounded-tr-xl bg-white flex gap-2 font-gothic">
-                    <img src={GithubIcon} className="w-6"/>
-                    <p>mjgalarza1</p>
-                </a>
+                <div id="github-link">
+                    {/* This below could be its own component */}
+                    <a
+                        href="https://github.com/mjgalarza1/simply-another-pomodoro-timer"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="fixed bottom-0 left-0 bg-white p-1 rounded-tr-xl flex justify-between overflow-hidden group"
+                    >
 
+                        <div id="github-icon-container" className="w-6 flex items-center justify-center">
+                            <img src={GithubIcon}/>
+                        </div>
+
+                        <div id="github-text-container"
+                             className="-order-1 flex items-center justify-center whitespace-nowrap overflow-hidden w-0 transition-[width] duration-300 group-hover:w-[90px]">
+                            <span className="font-gothic">mjgalarza1</span>
+                        </div>
+
+                    </a>
+                </div>
             </div>
 
         </>
