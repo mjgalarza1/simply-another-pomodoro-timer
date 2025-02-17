@@ -1,6 +1,6 @@
 import MainLogo from "./assets/imgs/simply-another-pomodoro-timer-logo.svg";
 import GithubButton from "./components/buttons/GithubButton.jsx";
-import PomodoroTimer from "./components/buttons/PomodoroTimer.jsx";
+import PomodoroTimer from "./components/PomodoroTimer.jsx";
 
 function App() {
     return (
