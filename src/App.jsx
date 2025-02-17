@@ -1,5 +1,6 @@
 import MainLogo from "./assets/imgs/simply-another-pomodoro-timer-logo.svg";
 import GithubButton from "./components/buttons/GithubButton.jsx";
+import PomodoroTimer from "./components/buttons/PomodoroTimer.jsx";
 
 function App() {
     return (
@@ -8,8 +9,8 @@ function App() {
 
                 <img id="logo" className="w-lg" src={MainLogo} alt="Simply Another Pomodoro Timer"/>
 
-                <div id="pomodoro-timer-container" className="text-center border-2">
-                    <p>[ WIP: Pomodoro Timer container + bottom buttons ]</p>
+                <div id="pomodoro-timer-container">
+                    <PomodoroTimer />
                 </div>
 
                 <div id="github-link" className="fixed bottom-0 left-0">
