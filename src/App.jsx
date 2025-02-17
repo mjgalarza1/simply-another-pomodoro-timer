@@ -16,7 +16,7 @@ function App() {
                     id="github-link"
                     href="https://github.com/mjgalarza1/simply-another-pomodoro-timer"
                     target="_blank"
-                    className="fixed p-2 bottom-0 left-0 rounded-tr-xl bg-white flex gap-2">
+                    className="fixed p-2 bottom-0 left-0 rounded-tr-xl bg-white flex gap-2 font-gothic">
                     <img src={GithubIcon} className="w-6"/>
                     <p>mjgalarza1</p>
                 </a>

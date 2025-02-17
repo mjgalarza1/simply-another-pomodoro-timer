@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: Gothic A1;
+  src: url("./assets/fonts/GothicA1-Light.ttf");
 }
 
 body {
@@ -12,4 +15,6 @@ body {
     ;
 }
 
+@theme {
+  --font-gothic: "Gothic A1", sans-serif;
 }
