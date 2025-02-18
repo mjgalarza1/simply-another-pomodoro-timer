@@ -18,6 +18,11 @@ function PomodoroTimer() {
                 <div id="timer">
                     <h1 className="font-fredoka text-[150px] text-[#464646] [@media(max-height:670px)]:text-[50px] max-[616px]:text-[24vw]">25:00</h1>
                 </div>
+                <div id="info-button" className="relative">
+                    <button onClick={() => console.log("Info button was pressed")} className="absolute bottom-0 right-0 -mb-3 -mr-3 w-[24px] max-[376px]:w-[20px]">
+                        <img src={Info} alt="Info button"/>
+                    </button>
+                </div>
             </div>
 
             <div id="pomodoro-player-buttons" className="flex flex-row justify-center gap-8 drop-shadow-[1px_3px_8px_rgba(94,44,164,0.71)]">

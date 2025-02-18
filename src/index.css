@@ -14,9 +14,8 @@ body {
   @apply
     bg-[url('/pastel-background.jpg')]
     bg-cover
-    bg-left
     bg-repeat-x
-    h-screen
+    h-full
     ;
 }
 

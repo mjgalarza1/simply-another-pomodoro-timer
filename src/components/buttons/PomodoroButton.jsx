@@ -6,7 +6,7 @@ const PomodoroButton = ({text,onClick}) => {
             w-[200px]
             h-[9vh]
             max-h-[50px]
-            min-h-[20px]
+            min-h-[30px]
             flex justify-center items-center p-2 text-center bg-white
             rounded-xl border-1 border-[#464646]
             font-fredoka text-[24px] text-[#464646]

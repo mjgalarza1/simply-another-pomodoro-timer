@@ -5,10 +5,10 @@ import PomodoroTimer from "./components/PomodoroTimer.jsx";
 function App() {
     return (
         <>
-            <div id="wrapper" className="flex justify-center items-center h-screen">
+            <div id="wrapper" className="flex justify-center items-center h-screen min-h-[270px]">
                 <div id="main-container" className="flex flex-col justify-center items-center gap-3 w-[616px] ">
 
-                    <img id="logo" className="w-[500px] px-4 [@media(max-height:750px)]:w-[70vh]" src={MainLogo} alt="Simply Another Pomodoro Timer"/>
+                    <img id="logo" className="w-[500px] px-4 [@media(max-height:750px)]:w-[70vh] [@media(max-height:350px)]:hidden" src={MainLogo} alt="Simply Another Pomodoro Timer"/>
 
                     <div id="pomodoro-timer-container">
                         <PomodoroTimer/>
