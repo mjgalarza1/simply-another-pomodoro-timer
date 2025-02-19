@@ -19,7 +19,7 @@ function PomodoroTimer() {
                     <h1 className="font-fredoka text-[150px] text-[#464646] [@media(max-height:670px)]:text-[50px] max-[616px]:text-[24vw]">25:00</h1>
                 </div>
                 <div id="info-button" className="relative">
-                    <button onClick={() => console.log("Info button was pressed")} className="absolute bottom-0 right-0 -mb-3 -mr-3 w-[24px] max-[376px]:w-[20px]">
+                    <button onClick={() => console.log("Info button was pressed")} className="absolute bottom-0 right-0 -mb-3 -mr-3 w-[24px] max-[376px]:w-[20px] hover:cursor-pointer">
                         <img src={Info} alt="Info button"/>
                     </button>
                 </div>
