@@ -22,4 +22,16 @@ body {
 @theme {
   --font-gothic: "Gothic A1", sans-serif;
   --font-fredoka: "Fredoka", sans-serif;
+
+  --animate-fadeAndZoomIn: fadeAndZoomIn 0.5s ease-out;
+  @keyframes fadeAndZoomIn {
+    0% {
+      opacity: 0;
+      transform: scale(95%);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(100%);
+    }
+  }
 }
