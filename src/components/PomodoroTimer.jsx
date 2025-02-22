@@ -137,6 +137,11 @@ function PomodoroTimer() {
         }
     }, [timeLeft <= 0]);
 
+    // Adds and syncs the timer to the webpage's title.
+    useEffect(() => {
+        document.title = formatTime(timeLeft) + " | Simply Another Pomodoro Timer"
+    }, [timeLeft]);
+
     const formatTime = (seconds) => {
         const minutes = Math.floor(seconds / 60).toString().padStart(2, "0");
         const secs = (seconds % 60).toString().padStart(2, "0");
