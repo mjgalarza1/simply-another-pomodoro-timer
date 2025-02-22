@@ -12,9 +12,9 @@ function PomodoroTimer() {
     const [selectedDuration, setSelectedDuration] = useState("pomodoro")
     const [isPlaying, setIsPlaying] = useState(false)
 
-    const [pomodoroDuration, setPomodoroDuration] = useState(0.2)
-    const [shortBreakDuration, setShortBreakDuration] = useState(0.1)
-    const [longBreakDuration, setLongBreakDuration] = useState(0.3)
+    const [pomodoroDuration, setPomodoroDuration] = useState(25)
+    const [shortBreakDuration, setShortBreakDuration] = useState(5)
+    const [longBreakDuration, setLongBreakDuration] = useState(10)
 
     const [currentDuration, setCurrentDuration] = useState(pomodoroDuration)
 
@@ -101,6 +101,7 @@ function PomodoroTimer() {
     const handleRestart = () => {
         console.log("Restart was pressed")
         setTimeLeft(getMinutesAsSeconds(currentDuration));
+        setIsPlaying(false)
     }
 
     // REMOVE: This is here only to watch how timeLeft is behaving (with console logs).
@@ -115,7 +116,7 @@ function PomodoroTimer() {
             console.log("Starting interval with seconds: ", timeLeft)
             intervalRef.current = setInterval(() => {
                 setTimeLeft(prev => Math.max(prev - 1, 0))
-            }, 300)
+            }, 1000)
         } else {
             console.log("Interval has paused")
             clearInterval(intervalRef.current)
@@ -129,9 +130,18 @@ function PomodoroTimer() {
     useEffect(() => {
         if (timeLeft <= 0) {
             console.log("Time has stopped (reached 0s)")
-            handleAutomaticDurationChange()
+            clearInterval(intervalRef.current)
+            intervalRef.current = setInterval(() => {
+                handleAutomaticDurationChange()
+            }, 1000)
         }
     }, [timeLeft <= 0]);
+
+    const formatTime = (seconds) => {
+        const minutes = Math.floor(seconds / 60).toString().padStart(2, "0");
+        const secs = (seconds % 60).toString().padStart(2, "0");
+        return `${minutes}:${secs}`;
+    };
 
     return (
         <div id="pomodoro-timer-container" className="flex flex-col gap-8 [@media(max-height:350px)]:gap-4">
@@ -142,8 +152,8 @@ function PomodoroTimer() {
                     <PomodoroRadioButton inputValue="short-break" inputName="pomodoro" label="Short break" isChecked={selectedDuration === "short-break"} onClick={() => handleDurationChange("short-break")}/>
                     <PomodoroRadioButton inputValue="long-break" inputName="pomodoro" label="Long break" isChecked={selectedDuration === "long-break"} onClick={() => handleDurationChange("long-break")}/>
                 </div>
-                <div id="timer">
-                    <h1 className="font-fredoka text-[150px] text-[#464646] [@media(max-height:670px)]:text-[50px] max-[616px]:text-[24vw]">25:00</h1>
+                <div id="timer" className="font-rubik text-[150px] tabular-nums tracking-[-6px] text-[#464646] [@media(max-height:670px)]:text-[50px] [@media(max-height:670px)]:tracking-[-2px] max-[616px]:text-[24vw] max-[616px]:tracking-[-1vw]">
+                    <h1>{formatTime(timeLeft)}</h1>
                 </div>
                 <div id="info-button" className="relative">
                     <button onClick={() => console.log("Info button was pressed")} className="absolute bottom-0 right-0 -mb-3 -mr-3 w-[24px] max-[376px]:w-[20px] hover:cursor-pointer">
@@ -154,8 +164,9 @@ function PomodoroTimer() {
             </div>
 
 
-            {/* TODO: ADD behavior to everything, ADD Spotify playlist or Youtube radio*/}
-            {/* FINISHED: Add player icons, add box-shadow to icons, make buttons component for the top buttons, add timer, add the info button, CHANGE buttons to radios? ADD startup animation (fade-in of main-container div)*/}
+            {/* TODO: ADD default alarm, ADD settings behavior (choose pomodoros+custom, alarm sfx, volume), ADD info behavior, REFACTOR names for clarity*/}
+            {/* TODO EXTRAS: ADD next button (+behaviour), ADD Spotify playlist or Youtube radio, ability to DISABLE long-break through settings*/}
+            {/* FINISHED: Add player icons, add box-shadow to icons, make buttons component for the top buttons, add timer, add the info button, CHANGE buttons to radios? ADD startup animation (fade-in of main-container div, ADD timer behavior)*/}
 
             <div id="pomodoro-player-buttons" className="flex flex-row justify-center gap-8 drop-shadow-[1px_3px_8px_rgba(94,44,164,0.71)]">
                 {isPlaying ? <PlayerButton icon={Pause} alt={"Pause Button"} onClick={() => handlePlay()} /> : <PlayerButton icon={Play} alt={"Play Button"} onClick={() => handlePlay()} />}

@@ -10,6 +10,11 @@
   src: url("./assets/fonts/Fredoka-SemiBold.ttf");
 }
 
+@font-face {
+  font-family: Rubik;
+  src: url("./assets/fonts/Rubik-Bold.ttf");
+}
+
 body {
   @apply
     bg-[url('/pastel-background.jpg')]
@@ -22,6 +27,7 @@ body {
 @theme {
   --font-gothic: "Gothic A1", sans-serif;
   --font-fredoka: "Fredoka", sans-serif;
+  --font-rubik: "Rubik", sans-serif;
 
   --animate-fadeAndZoomIn: fadeAndZoomIn 0.5s ease-out;
   @keyframes fadeAndZoomIn {
