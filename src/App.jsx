@@ -12,7 +12,7 @@ function App() {
                     <div id="logo-wrapper" className="overflow-clip">
                         <img className="
                         w-[500px] px-4 [@media(max-height:750px)]:w-[66.5vh] [@media(max-height:350px)]:hidden
-                        transition duration-300 ease-in-out hover:scale-105 overflow-clip"
+                        transition duration-300 ease-in-out hover:scale-105"
                             src={MainLogo} alt="Simply Another Pomodoro Timer"/>
                     </div>
 
