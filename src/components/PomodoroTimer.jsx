@@ -3,7 +3,8 @@ import Pause from "../assets/imgs/icons/pause-svgrepo-com.svg"
 import Restart from "../assets/imgs/icons/restart-svgrepo-com.svg"
 import Settings from "../assets/imgs/icons/settings-svgrepo-com.svg"
 import Info from "../assets/imgs/icons/icons8-info.svg"
-import DefaultAlarm from "../assets/sfx/alarm-default-3s.mp3"
+import PreAlarm from "../assets/sfx/pre-alarm-default.mp3"
+import DefaultAlarm from "../assets/sfx/alarm-default.mp3"
 import PlayerButton from "./buttons/PlayerButton.jsx";
 import PomodoroRadioButton from "./buttons/PomodoroRadioButton.jsx";
 import {useEffect, useRef, useState} from "react";
@@ -24,8 +25,8 @@ function PomodoroTimer() {
     const [timeLeft, setTimeLeft] = useState(currentDuration * 60)
     const intervalRef = useRef(null)
 
+    const preAlarmRef = useRef(new Audio(PreAlarm))
     const alarmRef = useRef(new Audio(DefaultAlarm))
-    const [isAlarmPlaying, setIsAlarmPlaying] = useState(false)
 
     const pomodoroMap = new Map([
         ["pomodoro", "short-break"],
@@ -44,16 +45,8 @@ function PomodoroTimer() {
         return (minutes * 60)
     }
 
-    function restartAlarm() {
-        alarmRef.current.pause()
-        alarmRef.current.currentTime = 0
-        setIsAlarmPlaying(false)
-    }
-
-// Transitions between the three durations when the user starts the timer.
+    // Transitions between the three durations when the user starts the timer.
     const handleAutomaticDurationChange = () => {
-
-        restartAlarm();
 
         if (isPlaying) {
             if (sessionCounter < 7) {
@@ -96,7 +89,6 @@ function PomodoroTimer() {
         setCurrentDuration(timeDuration)
         setTimeLeft(getMinutesAsSeconds(timeDuration))
         setIsPlaying(false)
-        restartAlarm()
     };
 
     // Sets the isPlaying to true/false when the user presses the play/pause button.
@@ -104,17 +96,9 @@ function PomodoroTimer() {
         if (isPlaying) {
             console.log("Pause was pressed")
             setIsPlaying(false)
-            if (isAlarmPlaying) {
-                console.log("Alarm is playing")
-                alarmRef.current.pause()
-            }
         } else {
             console.log("Play was pressed")
             setIsPlaying(true)
-            if (isAlarmPlaying) {
-                setIsAlarmPlaying(true)
-                playAlarmSfx()
-            }
         }
     }
 
@@ -123,7 +107,6 @@ function PomodoroTimer() {
         console.log("Restart was pressed")
         setTimeLeft(getMinutesAsSeconds(currentDuration));
         setIsPlaying(false)
-        restartAlarm()
     }
 
     // REMOVE: This is here only to watch how timeLeft is behaving (with console logs).
@@ -134,6 +117,11 @@ function PomodoroTimer() {
     // Starts and pauses the timer using an interval.
     useEffect(() => {
 
+        if (isPlaying && timeLeft === 0) {
+            console.log("FIX: TimeLeft equals 0 and Play button has been pressed by user")
+            handleAutomaticDurationChange()
+            return;
+        }
         if (isPlaying) {
             console.log("Starting interval with seconds: ", timeLeft)
             intervalRef.current = setInterval(() => {
@@ -164,18 +152,19 @@ function PomodoroTimer() {
         document.title = formatTime(timeLeft) + " | Simply Another Pomodoro Timer"
     }, [timeLeft]);
 
-    // Starts alarm sfx when timeLeft equals three.
+    // Plays the pre-alarm sfx when timeLeft is below three, and the alarm when timeLeft equals zero.
     useEffect(() => {
-        if (timeLeft === 3) {
-            setIsAlarmPlaying(true)
-            alarmRef.current.currentTime = 0;
-            playAlarmSfx()
+        if (timeLeft > 0 && timeLeft <= 3) {
+            console.log("Start preAlarm sfx")
+            preAlarmRef.current.currentTime = 0;
+            preAlarmRef.current.play().catch(error => console.error("An error has occurred trying to play audio:", error));
         }
-    }, [timeLeft === 3]);
-
-    const playAlarmSfx = () => {
-        alarmRef.current.play().catch(error => console.error("Error al reproducir el audio:", error));
-    }
+        if (timeLeft === 0) {
+            console.log("Start alarm sfx")
+            alarmRef.current.currentTime = 0;
+            alarmRef.current.play().catch(error => console.error("An error has occurred trying to play audio:", error));
+        }
+    }, [timeLeft]);
 
     const formatTime = (seconds) => {
         const minutes = Math.floor(seconds / 60).toString().padStart(2, "0");
@@ -203,12 +192,11 @@ function PomodoroTimer() {
 
             </div>
 
-            {/* TODO FIX: When pausing at 00:00, timer doesn't continue if "play" is pressed again, and alarm keeps replaying.*/}
-            {/* TODO FIX: When pausing and un-pausing, it restarts the interval timeout, un-syncing the alarm sfx.*/}
-
-            {/* TODO: ADD settings behavior (choose pomodoros+custom, alarm volume), ADD info behavior, REFACTOR names for clarity, ADD webpage icon*/}
-            {/* TODO EXTRAS: ADD next button (+behaviour), ADD Spotify playlist or Youtube radio. SETTINGS: ability to DISABLE long-break and to CHOOSE alarm sfx*/}
+            {/* TODO: ADD timer transition between durations, ADD settings behavior (choose pomodoros+custom, alarm volume), ADD info behavior, REFACTOR names for clarity, ADD webpage icon*/}
+            {/* TODO EXTRAS: ADD next button (+behaviour), ADD Spotify playlist or Youtube radio, MODULARIZE things better. SETTINGS: ability to DISABLE long-break and to CHOOSE alarm sfx*/}
             {/* FINISHED: Add player icons, add box-shadow to icons, make buttons component for the top buttons, add timer, add the info button, CHANGE buttons to radios? ADD startup animation (fade-in of main-container div, ADD timer behavior, ADD default alarm)*/}
+            {/* FINISHED FIX 1: When pausing at 00:00, timer doesn't continue if "play" is pressed again, and alarm keeps replaying.*/}
+            {/* FINISHED FIX 2: When pausing and un-pausing, it restarts the interval timeout, un-syncing the alarm sfx.*/}
 
             <div id="pomodoro-player-buttons" className="flex flex-row justify-center gap-8 drop-shadow-[1px_3px_8px_rgba(94,44,164,0.71)]">
                 {isPlaying ? <PlayerButton icon={Pause} alt={"Pause Button"} onClick={() => handlePlay()} /> : <PlayerButton icon={Play} alt={"Play Button"} onClick={() => handlePlay()} />}
