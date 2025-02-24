@@ -182,7 +182,9 @@ function PomodoroTimer() {
                     <PomodoroRadioButton inputValue="long-break" inputName="pomodoro" label="Long break" isChecked={selectedDuration === "long-break"} onClick={() => handleDurationChange("long-break")}/>
                 </div>
                 <div id="timer" className="font-rubik text-[150px] tabular-nums tracking-[-6px] text-[#464646] [@media(max-height:670px)]:text-[50px] [@media(max-height:670px)]:tracking-[-2px] max-[616px]:text-[24vw] max-[616px]:tracking-[-1vw]">
-                    <h1>{formatTime(timeLeft)}</h1>
+                    <div key={selectedDuration} className="animate-slideIn">
+                        <h1 key={timeLeft} className={`${timeLeft <= 3 ? "animate-zoomOut" : ""}`}>{formatTime(timeLeft)}</h1>
+                    </div>
                 </div>
                 <div id="info-button" className="relative">
                     <button onClick={() => console.log("Info button was pressed")} className="absolute bottom-0 right-0 -mb-3 -mr-3 w-[24px] max-[376px]:w-[20px] hover:cursor-pointer">
@@ -192,9 +194,9 @@ function PomodoroTimer() {
 
             </div>
 
-            {/* TODO: ADD timer transition between durations, ADD settings behavior (choose pomodoros+custom, alarm volume), ADD info behavior, REFACTOR names for clarity, ADD webpage icon*/}
+            {/* TODO: ADD settings behavior (choose pomodoros+custom, alarm volume), ADD info behavior, REFACTOR names for clarity, ADD webpage icon*/}
             {/* TODO EXTRAS: ADD next button (+behaviour), ADD Spotify playlist or Youtube radio, MODULARIZE things better. SETTINGS: ability to DISABLE long-break and to CHOOSE alarm sfx*/}
-            {/* FINISHED: Add player icons, add box-shadow to icons, make buttons component for the top buttons, add timer, add the info button, CHANGE buttons to radios? ADD startup animation (fade-in of main-container div, ADD timer behavior, ADD default alarm)*/}
+            {/* FINISHED: Add player icons, add box-shadow to icons, make buttons component for the top buttons, add timer, add the info button, CHANGE buttons to radios? ADD startup animation (fade-in of main-container div, ADD timer behavior, ADD default alarm, ADD timer transition between durations)*/}
             {/* FINISHED FIX 1: When pausing at 00:00, timer doesn't continue if "play" is pressed again, and alarm keeps replaying.*/}
             {/* FINISHED FIX 2: When pausing and un-pausing, it restarts the interval timeout, un-syncing the alarm sfx.*/}
 
