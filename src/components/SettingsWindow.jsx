@@ -14,14 +14,22 @@ function SettingsWindow({ close, pomodoroDuration, shortBreakDuration, longBreak
         volumeSlider.style.background = `linear-gradient(to right, #464646 ${alarmVolume * 100}%, #FFFFFF ${alarmVolume * 100}%)`;
     }, [alarmVolume]);
 
-    return (
-        <div id="modal-container" className="fixed inset-0 flex justify-center items-center bg-[#4F5B60]/70 z-50 backdrop-blur-[50px]">
+    // Disables body overflow when SettingsWindow is open
+    useEffect(() => {
+        document.body.style.overflow = "hidden";
+        return () => {
+            document.body.style.overflow = "";
+        };
+    }, []);
 
-            <div id="settings-container" className="rounded-[32px] bg-white shadow-[0_20px_15px_0_rgba(0,0,0,0.4)]">
+    return (
+        <div id="modal-container" className="fixed inset-0 flex justify-center items-center bg-[#4F5B60]/70 z-50 backdrop-blur-[50px] [@media(max-height:400px)]:items-start overflow-y-auto">
+
+            <div id="settings-container" className="rounded-[32px] bg-white shadow-[0_20px_15px_0_rgba(0,0,0,0.4)] my-6 max-[560px]:w-[95vw]">
 
                 <div id="title-wrapper" className="flex flex-row justify-between items-center py-5 ">
-                    <h2 id="title" className="font-fredoka text-4xl tracking-[8px] text-[#464646] pl-8">SETTINGS</h2>
-                    <div id="close-button" onClick={close} className="w-[26px] h-[26px] mr-5">
+                    <h2 id="title" className="font-fredoka text-4xl tracking-[8px] text-[#464646] pl-8 truncate max-w-full max-[470px]:tracking-[1vw] max-[470px]:text-[18px]">SETTINGS</h2>
+                    <div id="close-button" onClick={close} className="w-[26px] h-[26px] min-w-[26px] min-h-[26px] mr-5">
                         <button className="hover:cursor-pointer">
                             <img src={CloseButton} alt="X"/>
                         </button>
@@ -30,14 +38,14 @@ function SettingsWindow({ close, pomodoroDuration, shortBreakDuration, longBreak
 
                 <div id="settings-wrapper"
                      className="flex flex-col shadow-[inset_0px_4px_4px_0px_rgba(0,0,0,0.15)] px-6">
-                    <div id="timers-wrapper" className="flex flex-row gap-8 py-6">
+                    <div id="timers-wrapper" className="flex flex-row gap-8 py-6 max-[470px]:flex-col">
                         <TimerInput title="Pomodoro" minutes={pomodoroDuration} state={setPomodoroDuration}/>
                         <TimerInput title="Short break" minutes={shortBreakDuration} state={setShortBreakDuration}/>
                         <TimerInput title="Long break" minutes={longBreakDuration} state={setLongBreakDuration}/>
                     </div>
 
                     <div id="alert-volume-wrapper" className="flex flex-col gap-2 border-t-1 border-[#B1B4C9] py-6 pb-12">
-                        <label htmlFor="volume-slider" className="font-fredoka text-[26px] font-medium text-[#464646]">
+                        <label htmlFor="volume-slider" className="font-fredoka text-[26px] font-medium text-[#464646] max-[470px]:text-[6.5vw]">
                             Alarm volume: {Math.round(alarmVolume * 100)}%
                         </label>
                         <input

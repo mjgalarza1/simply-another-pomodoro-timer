@@ -251,9 +251,9 @@ function PomodoroTimer() {
 
             </div>
 
-            {/* TODO: make settings RESPONSIVE, ADD transition animation to settings, ADD info behavior, REFACTOR names for clarity, ADD webpage icon*/}
+            {/* TODO: ADD transition animation to settings, ADD info behavior, REFACTOR names for clarity, ADD webpage icon*/}
             {/* TODO EXTRAS: ADD next button (+behaviour), ADD Spotify playlist or Youtube radio, MODULARIZE things better. SETTINGS: ability to DISABLE long-break and to CHOOSE alarm sfx*/}
-            {/* FINISHED: Add player icons, add box-shadow to icons, make buttons component for the top buttons, add timer, add the info button, CHANGE buttons to radios? ADD startup animation (fade-in of main-container div, ADD timer behavior, ADD default alarm, ADD timer transition between durations, ADD settings behavior (choose pomodoros+custom, alarm volume))*/}
+            {/* FINISHED: Add player icons, add box-shadow to icons, make buttons component for the top buttons, add timer, add the info button, CHANGE buttons to radios? ADD startup animation (fade-in of main-container div, ADD timer behavior, ADD default alarm, ADD timer transition between durations, ADD settings behavior (choose pomodoros+custom, alarm volume, make settings RESPONSIVE))*/}
             {/* FINISHED FIX 1: When pausing at 00:00, timer doesn't continue if "play" is pressed again, and alarm keeps replaying.*/}
             {/* FINISHED FIX 2: When pausing and un-pausing, it restarts the interval timeout, un-syncing the alarm sfx.*/}
 
