@@ -8,6 +8,13 @@
 @font-face {
   font-family: Fredoka;
   src: url("./assets/fonts/Fredoka-SemiBold.ttf");
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: Fredoka;
+  src: url("./assets/fonts/Fredoka-Medium.ttf");
+  font-weight: 500;
 }
 
 @font-face {
@@ -21,7 +28,32 @@ body {
     bg-cover
     bg-repeat-x
     h-full
+    font-bold
     ;
+}
+
+input[type="range"]:focus {
+  outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  border: 2px solid #464646;
+  background-color: #FFFFFF;
+  cursor: pointer;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  border: 2px solid #464646;
+  background-color: #FFFFFF;
+  cursor: pointer;
 }
 
 @theme {

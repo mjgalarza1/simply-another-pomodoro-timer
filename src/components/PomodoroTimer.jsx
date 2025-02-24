@@ -8,15 +8,16 @@ import DefaultAlarm from "../assets/sfx/alarm-default.mp3"
 import PlayerButton from "./buttons/PlayerButton.jsx";
 import PomodoroRadioButton from "./buttons/PomodoroRadioButton.jsx";
 import {useEffect, useRef, useState} from "react";
+import SettingsWindow from "./SettingsWindow.jsx";
 
 function PomodoroTimer() {
 
     const [selectedDuration, setSelectedDuration] = useState("pomodoro")
     const [isPlaying, setIsPlaying] = useState(false)
 
-    const [pomodoroDuration, setPomodoroDuration] = useState(0.15)
-    const [shortBreakDuration, setShortBreakDuration] = useState(0.1)
-    const [longBreakDuration, setLongBreakDuration] = useState(0.1)
+    const [pomodoroDuration, setPomodoroDuration] = useState(25)
+    const [shortBreakDuration, setShortBreakDuration] = useState(5)
+    const [longBreakDuration, setLongBreakDuration] = useState(10)
 
     const [currentDuration, setCurrentDuration] = useState(pomodoroDuration)
 
@@ -27,6 +28,9 @@ function PomodoroTimer() {
 
     const preAlarmRef = useRef(new Audio(PreAlarm))
     const alarmRef = useRef(new Audio(DefaultAlarm))
+    const [alarmVolume, setAlarmVolume] = useState(1.0)
+
+    const [settingsOpen, setSettingsOpen] = useState(false)
 
     const pomodoroMap = new Map([
         ["pomodoro", "short-break"],
@@ -109,6 +113,11 @@ function PomodoroTimer() {
         setIsPlaying(false)
     }
 
+    // Opens the settings window when the user presses the settings button
+    const handleSettings = () => {
+        setSettingsOpen(true)
+    }
+
     // REMOVE: This is here only to watch how timeLeft is behaving (with console logs).
     useEffect(() => {
         console.log(timeLeft)
@@ -166,6 +175,39 @@ function PomodoroTimer() {
         }
     }, [timeLeft]);
 
+    // Modifies the alarm's volume levels.
+    useEffect(() => {
+        if (alarmRef.current) {
+            alarmRef.current.volume = alarmVolume;
+        }
+        if (preAlarmRef.current) {
+            preAlarmRef.current.volume = alarmVolume;
+        }
+    }, [alarmVolume]);
+
+    // Sets the changed timers (through settings)
+    useEffect(() => {
+        if (settingsOpen) {
+            setTimeLeft(getMinutesAsSeconds(pomodoroDuration))
+        }
+    }, [pomodoroDuration]);
+
+    useEffect(() => {
+        if (settingsOpen) {
+            setTimeLeft(getMinutesAsSeconds(shortBreakDuration))
+        }
+    }, [shortBreakDuration]);
+
+    useEffect(() => {
+        if (settingsOpen) {
+            setTimeLeft(getMinutesAsSeconds(longBreakDuration))
+        }
+    }, [longBreakDuration]);
+
+    useEffect(() => {
+        setIsPlaying(false)
+    }, [pomodoroDuration, shortBreakDuration, longBreakDuration]);
+
     const formatTime = (seconds) => {
         const minutes = Math.floor(seconds / 60).toString().padStart(2, "0");
         const secs = (seconds % 60).toString().padStart(2, "0");
@@ -174,6 +216,21 @@ function PomodoroTimer() {
 
     return (
         <div id="pomodoro-timer-container" className="flex flex-col gap-8 [@media(max-height:350px)]:gap-4">
+
+            {settingsOpen && (
+                <SettingsWindow
+                    close={() => setSettingsOpen(false)}
+                    pomodoroDuration={pomodoroDuration}
+                    shortBreakDuration={shortBreakDuration}
+                    longBreakDuration={longBreakDuration}
+                    alarmVolume={alarmVolume}
+                    setPomodoroDuration={setPomodoroDuration}
+                    setShortBreakDuration={setShortBreakDuration}
+                    setLongBreakDuration={setLongBreakDuration}
+                    setAlarmVolume={setAlarmVolume}
+                />
+            )}
+
             <div id="pomodoro-buttons-and-timer" className="text-center p-[24px] bg-white rounded-[25px] shadow-[15px_23px_50px_rgb(148,118,174)] flex flex-col justify-center w-[616px] max-[650px]:w-[95vw]">
 
                 <div id="pomodoro-selection-buttons" className="flex flex-row justify-between gap-3 max-[616px]:gap-[2vw]">
@@ -194,16 +251,16 @@ function PomodoroTimer() {
 
             </div>
 
-            {/* TODO: ADD settings behavior (choose pomodoros+custom, alarm volume), ADD info behavior, REFACTOR names for clarity, ADD webpage icon*/}
+            {/* TODO: make settings RESPONSIVE, ADD transition animation to settings, ADD info behavior, REFACTOR names for clarity, ADD webpage icon*/}
             {/* TODO EXTRAS: ADD next button (+behaviour), ADD Spotify playlist or Youtube radio, MODULARIZE things better. SETTINGS: ability to DISABLE long-break and to CHOOSE alarm sfx*/}
-            {/* FINISHED: Add player icons, add box-shadow to icons, make buttons component for the top buttons, add timer, add the info button, CHANGE buttons to radios? ADD startup animation (fade-in of main-container div, ADD timer behavior, ADD default alarm, ADD timer transition between durations)*/}
+            {/* FINISHED: Add player icons, add box-shadow to icons, make buttons component for the top buttons, add timer, add the info button, CHANGE buttons to radios? ADD startup animation (fade-in of main-container div, ADD timer behavior, ADD default alarm, ADD timer transition between durations, ADD settings behavior (choose pomodoros+custom, alarm volume))*/}
             {/* FINISHED FIX 1: When pausing at 00:00, timer doesn't continue if "play" is pressed again, and alarm keeps replaying.*/}
             {/* FINISHED FIX 2: When pausing and un-pausing, it restarts the interval timeout, un-syncing the alarm sfx.*/}
 
             <div id="pomodoro-player-buttons" className="flex flex-row justify-center gap-8 drop-shadow-[1px_3px_8px_rgba(94,44,164,0.71)]">
                 {isPlaying ? <PlayerButton icon={Pause} alt={"Pause Button"} onClick={() => handlePlay()} /> : <PlayerButton icon={Play} alt={"Play Button"} onClick={() => handlePlay()} />}
                 <PlayerButton icon={Restart} alt={"Restart Button"} onClick={() => handleRestart()} />
-                <PlayerButton icon={Settings} alt={"Settings Button"} onClick={() => console.log("Settings was pressed")} />
+                <PlayerButton icon={Settings} alt={"Settings Button"} onClick={() => handleSettings()} />
             </div>
         </div>
     )
