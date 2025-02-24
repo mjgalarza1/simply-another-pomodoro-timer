@@ -187,26 +187,27 @@ function PomodoroTimer() {
 
     // Sets the changed timers (through settings)
     useEffect(() => {
-        if (settingsOpen) {
-            setTimeLeft(getMinutesAsSeconds(pomodoroDuration))
+        if (settingsOpen && selectedDuration === "pomodoro") {
+            setCurrentDuration(pomodoroDuration)
         }
     }, [pomodoroDuration]);
 
     useEffect(() => {
-        if (settingsOpen) {
-            setTimeLeft(getMinutesAsSeconds(shortBreakDuration))
+        if (settingsOpen && selectedDuration === "short-break") {
+            setCurrentDuration(shortBreakDuration)
         }
     }, [shortBreakDuration]);
 
     useEffect(() => {
-        if (settingsOpen) {
-            setTimeLeft(getMinutesAsSeconds(longBreakDuration))
+        if (settingsOpen && selectedDuration === "long-break") {
+            setCurrentDuration(longBreakDuration)
         }
     }, [longBreakDuration]);
 
     useEffect(() => {
+        setTimeLeft(getMinutesAsSeconds(currentDuration))
         setIsPlaying(false)
-    }, [pomodoroDuration, shortBreakDuration, longBreakDuration]);
+    }, [settingsOpen]);
 
     const formatTime = (seconds) => {
         const minutes = Math.floor(seconds / 60).toString().padStart(2, "0");
@@ -251,9 +252,9 @@ function PomodoroTimer() {
 
             </div>
 
-            {/* TODO: ADD transition animation to settings, ADD info behavior, REFACTOR names for clarity, ADD webpage icon*/}
+            {/* TODO: ADD info behavior, REFACTOR names for clarity, ADD webpage icon*/}
             {/* TODO EXTRAS: ADD next button (+behaviour), ADD Spotify playlist or Youtube radio, MODULARIZE things better. SETTINGS: ability to DISABLE long-break and to CHOOSE alarm sfx*/}
-            {/* FINISHED: Add player icons, add box-shadow to icons, make buttons component for the top buttons, add timer, add the info button, CHANGE buttons to radios? ADD startup animation (fade-in of main-container div, ADD timer behavior, ADD default alarm, ADD timer transition between durations, ADD settings behavior (choose pomodoros+custom, alarm volume, make settings RESPONSIVE))*/}
+            {/* FINISHED: Add player icons, add box-shadow to icons, make buttons component for the top buttons, add timer, add the info button, CHANGE buttons to radios? ADD startup animation (fade-in of main-container div, ADD timer behavior, ADD default alarm, ADD timer transition between durations, ADD settings behavior (choose pomodoros+custom, alarm volume, make settings RESPONSIVE, ADD transition animation to settings))*/}
             {/* FINISHED FIX 1: When pausing at 00:00, timer doesn't continue if "play" is pressed again, and alarm keeps replaying.*/}
             {/* FINISHED FIX 2: When pausing and un-pausing, it restarts the interval timeout, un-syncing the alarm sfx.*/}
 
