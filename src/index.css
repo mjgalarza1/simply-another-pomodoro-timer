@@ -94,4 +94,44 @@ input[type="range"]::-moz-range-thumb {
       transform: scale(100%);
     }
   }
+
+  --animate-settingsFadeIn: settingsFadeIn 0.2s ease-out;
+  @keyframes settingsFadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  --animate-settingsFadeOut: settingsFadeOut 0.2s ease-out;
+  @keyframes settingsFadeOut {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  --animate-settingsSlideIn: settingsSlideIn 0.2s ease-out;
+  @keyframes settingsSlideIn {
+    0% {
+      transform: translateY(-70%);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  --animate-settingsSlideOut: settingsSlideOut 0.2s ease-out;
+  @keyframes settingsSlideOut {
+    0% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(70%);
+    }
+  }
 }
