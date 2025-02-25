@@ -9,6 +9,7 @@ import PlayerButton from "./buttons/PlayerButton.jsx";
 import PomodoroRadioButton from "./buttons/PomodoroRadioButton.jsx";
 import {useEffect, useRef, useState} from "react";
 import SettingsWindow from "./SettingsWindow.jsx";
+import InfoModal from "./InfoModal.jsx";
 
 function PomodoroTimer() {
 
@@ -31,6 +32,7 @@ function PomodoroTimer() {
     const [alarmVolume, setAlarmVolume] = useState(1.0)
 
     const [settingsOpen, setSettingsOpen] = useState(false)
+    const [isInfoOpen, setIsInfoOpen] = useState(false);
 
     const pomodoroMap = new Map([
         ["pomodoro", "short-break"],
@@ -232,6 +234,8 @@ function PomodoroTimer() {
                 />
             )}
 
+            {isInfoOpen && <InfoModal close={() => setIsInfoOpen(false)} />}
+
             <div id="pomodoro-buttons-and-timer" className="text-center p-[24px] bg-white rounded-[25px] shadow-[15px_23px_50px_rgb(148,118,174)] flex flex-col justify-center w-[616px] max-[650px]:w-[95vw]">
 
                 <div id="pomodoro-selection-buttons" className="flex flex-row justify-between gap-3 max-[616px]:gap-[2vw]">
@@ -245,16 +249,16 @@ function PomodoroTimer() {
                     </div>
                 </div>
                 <div id="info-button" className="relative">
-                    <button onClick={() => console.log("Info button was pressed")} className="absolute bottom-0 right-0 -mb-3 -mr-3 w-[24px] max-[376px]:w-[20px] hover:cursor-pointer">
+                    <button onClick={() => setIsInfoOpen(true)} className="absolute bottom-0 right-0 -mb-3 -mr-3 w-[24px] max-[376px]:w-[20px] hover:cursor-pointer">
                         <img src={Info} alt="Info button"/>
                     </button>
                 </div>
 
             </div>
 
-            {/* TODO: ADD info behavior, REFACTOR names for clarity, ADD webpage icon*/}
-            {/* TODO EXTRAS: ADD next button (+behaviour), ADD Spotify playlist or Youtube radio, MODULARIZE things better. SETTINGS: ability to DISABLE long-break and to CHOOSE alarm sfx*/}
-            {/* FINISHED: Add player icons, add box-shadow to icons, make buttons component for the top buttons, add timer, add the info button, CHANGE buttons to radios? ADD startup animation (fade-in of main-container div, ADD timer behavior, ADD default alarm, ADD timer transition between durations, ADD settings behavior (choose pomodoros+custom, alarm volume, make settings RESPONSIVE, ADD transition animation to settings))*/}
+            {/* TODO: REFACTOR names for clarity, ADD webpage icon*/}
+            {/* TODO EXTRAS: ADD next button (+behavior), ADD Spotify playlist or Youtube radio, MODULARIZE things better. SETTINGS: ability to DISABLE long-break and to CHOOSE alarm sfx*/}
+            {/* FINISHED: Add player icons, add box-shadow to icons, make buttons component for the top buttons, add timer, add the info button, CHANGE buttons to radios? ADD startup animation (fade-in of main-container div, ADD timer behavior, ADD default alarm, ADD timer transition between durations, ADD settings behavior (choose pomodoros+custom, alarm volume, make settings RESPONSIVE, ADD transition animation to settings, ADD info behavior))*/}
             {/* FINISHED FIX 1: When pausing at 00:00, timer doesn't continue if "play" is pressed again, and alarm keeps replaying.*/}
             {/* FINISHED FIX 2: When pausing and un-pausing, it restarts the interval timeout, un-syncing the alarm sfx.*/}
 
