@@ -41,13 +41,13 @@ function SettingsWindow({ close, pomodoroDuration, shortBreakDuration, longBreak
 
     return (
         <div id="modal-container" className={
-            `fixed inset-0 flex justify-center items-center bg-[#4F5B60]/70 z-50 backdrop-blur-[50px] [@media(max-height:400px)]:items-start overflow-y-auto
+            `fixed inset-0 flex justify-center items-center bg-[#4F5B60]/70 z-50 backdrop-blur-[50px]  p-4
             ${isOpening ? "animate-settingsFadeIn" : ""}
             ${isClosing ? "animate-settingsFadeOut" : ""}
             `}>
 
             <div id="settings-container" className={
-                `rounded-[32px] bg-white shadow-[0_20px_15px_0_rgba(0,0,0,0.4)] my-6 max-[560px]:w-[95vw]
+                `rounded-2xl bg-white shadow-[0_20px_15px_0_rgba(0,0,0,0.4)] my-6 max-[560px]:w-[95vw] max-h-full overflow-y-auto
                 ${isOpening ? "animate-settingsSlideIn" : ""}
                 ${isClosing ? "animate-settingsSlideOut" : ""}
                 `}>
@@ -62,7 +62,7 @@ function SettingsWindow({ close, pomodoroDuration, shortBreakDuration, longBreak
                 </div>
 
                 <div id="settings-wrapper"
-                     className="flex flex-col shadow-[inset_0px_4px_4px_0px_rgba(0,0,0,0.15)] px-6">
+                     className="flex flex-col shadow-[inset_0px_4px_4px_0px_rgba(0,0,0,0.15)] px-6 ">
                     <div id="timers-wrapper" className="flex flex-row gap-8 py-6 max-[470px]:flex-col">
                         <TimerInput title="Pomodoro" minutes={pomodoroDuration} state={setPomodoroDuration}/>
                         <TimerInput title="Short break" minutes={shortBreakDuration} state={setShortBreakDuration}/>
