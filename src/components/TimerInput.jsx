@@ -1,10 +1,11 @@
-const TimerInput = ({title,minutes,state}) => {
+const TimerInput = ({title,minutes,state,handler}) => {
 
     const handleInputChange = (e) => {
         const value = e.target.value;
 
         if ((/^[1-9][0-9]{0,2}$/.test(value))) {
             state(value);
+            handler();
         }
     };
 

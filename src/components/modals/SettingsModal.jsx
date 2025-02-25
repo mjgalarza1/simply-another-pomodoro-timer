@@ -2,7 +2,7 @@ import TimerInput from "../TimerInput.jsx";
 import CloseButton from "../../assets/imgs/icons/close-svgrepo-com.svg";
 import {useEffect, useState} from "react";
 
-function SettingsModal({ close, pomodoroDuration, shortBreakDuration, longBreakDuration, alarmVolume, setPomodoroDuration, setShortBreakDuration, setLongBreakDuration, setAlarmVolume }) {
+function SettingsModal({ close, pomodoroDuration, shortBreakDuration, longBreakDuration, alarmVolume, setPomodoroDuration, setShortBreakDuration, setLongBreakDuration, setAlarmVolume, handleSettingsTimerChange }) {
 
     const [isOpening, setIsOpening] = useState(true);
     const [isClosing, setIsClosing] = useState(false)
@@ -64,9 +64,9 @@ function SettingsModal({ close, pomodoroDuration, shortBreakDuration, longBreakD
                 <div id="settings-wrapper"
                      className="flex flex-col shadow-[inset_0px_6px_14px_0px_rgba(95,99,121,0.15)] px-6 bg-white">
                     <div id="timers-wrapper" className="flex flex-row gap-8 py-6 max-[470px]:flex-col">
-                        <TimerInput title="Pomodoro" minutes={pomodoroDuration} state={setPomodoroDuration}/>
-                        <TimerInput title="Short break" minutes={shortBreakDuration} state={setShortBreakDuration}/>
-                        <TimerInput title="Long break" minutes={longBreakDuration} state={setLongBreakDuration}/>
+                        <TimerInput title="Pomodoro" minutes={pomodoroDuration} state={setPomodoroDuration} handler={handleSettingsTimerChange}/>
+                        <TimerInput title="Short break" minutes={shortBreakDuration} state={setShortBreakDuration} handler={handleSettingsTimerChange}/>
+                        <TimerInput title="Long break" minutes={longBreakDuration} state={setLongBreakDuration} handler={handleSettingsTimerChange}/>
                     </div>
 
                     <div id="alert-volume-wrapper" className="flex flex-col gap-2 border-t-1 border-[#B1B4C9] py-6 pb-12">

@@ -18,7 +18,7 @@ function PomodoroTimer() {
     const [selectedTimer, setSelectedTimer] = useState("pomodoro")
     const [isPlaying, setIsPlaying] = useState(false)
 
-    const [pomodoroDuration, setpomodoroDuration] = useState(25)
+    const [pomodoroDuration, setPomodoroDuration] = useState(25)
     const [shortBreakDuration, setShortBreakDuration] = useState(5)
     const [longBreakDuration, setLongBreakDuration] = useState(10)
 
@@ -34,6 +34,7 @@ function PomodoroTimer() {
     const [alarmVolume, setAlarmVolume] = useState(1.0)
 
     const [settingsOpen, setSettingsOpen] = useState(false)
+    const [applyingConfiguration, setApplyingConfiguration] = useState(false)
     const [isInfoOpen, setIsInfoOpen] = useState(false);
 
     const pomodoroSequenceMap = new Map([
@@ -114,6 +115,10 @@ function PomodoroTimer() {
         setSettingsOpen(true)
     }
 
+    const handleSettingsTimerChange = () => {
+        setApplyingConfiguration(true)
+    }
+
     // Starts and pauses the timer using an interval.
     useEffect(() => {
 
@@ -190,8 +195,11 @@ function PomodoroTimer() {
     }, [longBreakDuration]);
 
     useEffect(() => {
-        setTimeLeft(getMinutesAsSeconds(currentTimer))
-        setIsPlaying(false)
+        if (applyingConfiguration) {
+            setTimeLeft(getMinutesAsSeconds(currentTimer));
+            setIsPlaying(false)
+            setApplyingConfiguration(false)
+        }
     }, [settingsOpen]);
 
     const formatTime = (seconds) => {
@@ -210,10 +218,11 @@ function PomodoroTimer() {
                     shortBreakDuration={shortBreakDuration}
                     longBreakDuration={longBreakDuration}
                     alarmVolume={alarmVolume}
-                    setPomodoroDuration={setpomodoroDuration}
+                    setPomodoroDuration={setPomodoroDuration}
                     setShortBreakDuration={setShortBreakDuration}
                     setLongBreakDuration={setLongBreakDuration}
                     setAlarmVolume={setAlarmVolume}
+                    handleSettingsTimerChange={handleSettingsTimerChange}
                 />
             )}
 
