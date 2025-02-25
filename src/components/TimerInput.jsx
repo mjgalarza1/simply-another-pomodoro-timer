@@ -9,7 +9,7 @@ const TimerInput = ({title,minutes,state}) => {
     };
 
     return (
-        <div id="timer-input-container" className="flex flex-col items-start w-[140px] max-[560px]:w-full">
+        <div id="timer-input-container" className="flex flex-col items-center w-[140px] max-[560px]:w-full max-[470px]:items-start">
             <p className="font-fredoka text-[26px] font-medium text-[#464646] max-[560px]:text-[4.3vw] max-[470px]:text-[16px]">{title}</p>
             <input
                 id={title}
