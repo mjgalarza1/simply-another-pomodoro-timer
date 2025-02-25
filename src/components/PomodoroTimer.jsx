@@ -62,16 +62,12 @@ function PomodoroTimer() {
                 let timeDuration = timerMinutesMap.get(nextPomodoroSequence)
                 setCurrentTimer(timeDuration)
                 setTimeLeft(getMinutesAsSeconds(timeDuration));
-                console.log("Auto-changing from '" + selectedTimer + "' duration to: ", nextPomodoroSequence)
                 setSessionCounter(sessionCounter + 1);
-                console.log("Current session:", nextPomodoroSequence, sessionCounter + 1)
                 setSelectedTimer(nextPomodoroSequence)
             } else {
                 setCurrentTimer(longBreakDuration)
                 setTimeLeft(getMinutesAsSeconds(longBreakDuration));
-                console.log("Auto-changing from '" + selectedTimer + "' duration to: long-break")
                 setSessionCounter(0);
-                console.log("Current session: long-break", sessionCounter + 1)
                 setSelectedTimer("long-break")
             }
         }
@@ -80,7 +76,6 @@ function PomodoroTimer() {
 
     // Manages the transition between the three timers when the user presses on them.
     const handleManualTimerChange = (pressedTimer) => {
-        console.log(pressedTimer + " was selected by USER")
         switch (pressedTimer) {
             case "pomodoro":
                 setSessionCounter(1)
@@ -102,17 +97,14 @@ function PomodoroTimer() {
     // Sets the isPlaying to true/false when the user presses the play/pause button.
     const handlePlay = () => {
         if (isPlaying) {
-            console.log("Pause was pressed")
             setIsPlaying(false)
         } else {
-            console.log("Play was pressed")
             setIsPlaying(true)
         }
     }
 
     // Restarts the timer when the user presses the restart button.
     const handleRestart = () => {
-        console.log("Restart was pressed")
         setTimeLeft(getMinutesAsSeconds(currentTimer));
         setIsPlaying(false)
     }
@@ -122,26 +114,18 @@ function PomodoroTimer() {
         setSettingsOpen(true)
     }
 
-    // REMOVE: This is here only to watch how timeLeft is behaving (with console logs).
-    useEffect(() => {
-        console.log(timeLeft)
-    }, [timeLeft]);
-
     // Starts and pauses the timer using an interval.
     useEffect(() => {
 
         if (isPlaying && timeLeft === 0) {
-            console.log("FIX: TimeLeft equals 0 and Play button has been pressed by user")
             handleAutomaticTimerChange()
             return;
         }
         if (isPlaying) {
-            console.log("Starting interval with seconds: ", timeLeft)
             intervalRef.current = setInterval(() => {
                 setTimeLeft(prev => Math.max(prev - 1, 0))
             }, 1000)
         } else {
-            console.log("Interval has paused")
             clearInterval(intervalRef.current)
         }
 
@@ -152,7 +136,6 @@ function PomodoroTimer() {
     // Stops the timer when timeLeft reaches 0 and calls handleAutomaticTimerChange.
     useEffect(() => {
         if (timeLeft <= 0) {
-            console.log("Time has stopped (reached 0s)")
             clearInterval(intervalRef.current)
             intervalRef.current = setInterval(() => {
                 handleAutomaticTimerChange()
@@ -168,12 +151,10 @@ function PomodoroTimer() {
     // Plays the pre-alarm sfx when timeLeft is below three, and the alarm when timeLeft equals zero.
     useEffect(() => {
         if (timeLeft > 0 && timeLeft <= 3) {
-            console.log("Start preAlarm sfx")
             preAlarmRef.current.currentTime = 0;
             preAlarmRef.current.play().catch(error => console.error("An error has occurred trying to play audio:", error));
         }
         if (timeLeft === 0) {
-            console.log("Start alarm sfx")
             alarmRef.current.currentTime = 0;
             alarmRef.current.play().catch(error => console.error("An error has occurred trying to play audio:", error));
         }
@@ -259,12 +240,6 @@ function PomodoroTimer() {
                 </div>
 
             </div>
-
-            {/* TODO: ADD webpage icon*/}
-            {/* TODO EXTRAS: ADD next button (+behavior), ADD Spotify playlist or Youtube radio, MODULARIZE things better. SETTINGS: ability to DISABLE long-break and to CHOOSE alarm sfx*/}
-            {/* FINISHED: Add player icons, add box-shadow to icons, make buttons component for the top buttons, add timer, add the info button, CHANGE buttons to radios? ADD startup animation (fade-in of main-container div, ADD timer behavior, ADD default alarm, ADD timer transition between durations, ADD settings behavior (choose pomodoros+custom, alarm volume, make settings RESPONSIVE, ADD transition animation to settings, ADD info behavior, REFACTOR names for clarity))*/}
-            {/* FINISHED FIX 1: When pausing at 00:00, timer doesn't continue if "play" is pressed again, and alarm keeps replaying.*/}
-            {/* FINISHED FIX 2: When pausing and un-pausing, it restarts the interval timeout, un-syncing the alarm sfx.*/}
 
             <div id="pomodoro-player-buttons" className="flex flex-row justify-center gap-8 drop-shadow-[1px_3px_8px_rgba(94,44,164,0.71)]">
                 {isPlaying ? <PlayerButton icon={Pause} alt={"Pause Button"} onClick={() => handlePlay()} /> : <PlayerButton icon={Play} alt={"Play Button"} onClick={() => handlePlay()} />}
