@@ -5,26 +5,28 @@ import Settings from "../assets/imgs/icons/settings-svgrepo-com.svg"
 import Info from "../assets/imgs/icons/icons8-info.svg"
 import PreAlarm from "../assets/sfx/pre-alarm-default.mp3"
 import DefaultAlarm from "../assets/sfx/alarm-default.mp3"
+
 import PlayerButton from "./buttons/PlayerButton.jsx";
 import PomodoroRadioButton from "./buttons/PomodoroRadioButton.jsx";
+import SettingsModal from "./modals/SettingsModal.jsx";
+import InfoModal from "./modals/InfoModal.jsx";
+
 import {useEffect, useRef, useState} from "react";
-import SettingsWindow from "./SettingsWindow.jsx";
-import InfoModal from "./InfoModal.jsx";
 
 function PomodoroTimer() {
 
-    const [selectedDuration, setSelectedDuration] = useState("pomodoro")
+    const [selectedTimer, setSelectedTimer] = useState("pomodoro")
     const [isPlaying, setIsPlaying] = useState(false)
 
-    const [pomodoroDuration, setPomodoroDuration] = useState(25)
+    const [pomodoroDuration, setpomodoroDuration] = useState(25)
     const [shortBreakDuration, setShortBreakDuration] = useState(5)
     const [longBreakDuration, setLongBreakDuration] = useState(10)
 
-    const [currentDuration, setCurrentDuration] = useState(pomodoroDuration)
+    const [currentTimer, setCurrentTimer] = useState(pomodoroDuration)
 
     const [sessionCounter, setSessionCounter] = useState(1)
 
-    const [timeLeft, setTimeLeft] = useState(currentDuration * 60)
+    const [timeLeft, setTimeLeft] = useState(currentTimer * 60)
     const intervalRef = useRef(null)
 
     const preAlarmRef = useRef(new Audio(PreAlarm))
@@ -34,13 +36,13 @@ function PomodoroTimer() {
     const [settingsOpen, setSettingsOpen] = useState(false)
     const [isInfoOpen, setIsInfoOpen] = useState(false);
 
-    const pomodoroMap = new Map([
+    const pomodoroSequenceMap = new Map([
         ["pomodoro", "short-break"],
         ["short-break", "pomodoro"],
         ["long-break", "pomodoro"],
     ]);
 
-    const durationMap = new Map([
+    const timerMinutesMap = new Map([
         ["pomodoro", pomodoroDuration],
         ["short-break", shortBreakDuration],
         ["long-break", longBreakDuration],
@@ -51,35 +53,35 @@ function PomodoroTimer() {
         return (minutes * 60)
     }
 
-    // Transitions between the three durations when the user starts the timer.
-    const handleAutomaticDurationChange = () => {
+    // Transitions between the three timers when the user starts the timer.
+    const handleAutomaticTimerChange = () => {
 
         if (isPlaying) {
             if (sessionCounter < 7) {
-                let nextDuration = pomodoroMap.get(selectedDuration)
-                let timeDuration = durationMap.get(nextDuration)
-                setCurrentDuration(timeDuration)
+                let nextPomodoroSequence = pomodoroSequenceMap.get(selectedTimer)
+                let timeDuration = timerMinutesMap.get(nextPomodoroSequence)
+                setCurrentTimer(timeDuration)
                 setTimeLeft(getMinutesAsSeconds(timeDuration));
-                console.log("Auto-changing from '" + selectedDuration + "' duration to: ", nextDuration)
+                console.log("Auto-changing from '" + selectedTimer + "' duration to: ", nextPomodoroSequence)
                 setSessionCounter(sessionCounter + 1);
-                console.log("Current session:", nextDuration, sessionCounter + 1)
-                setSelectedDuration(nextDuration)
+                console.log("Current session:", nextPomodoroSequence, sessionCounter + 1)
+                setSelectedTimer(nextPomodoroSequence)
             } else {
-                setCurrentDuration(longBreakDuration)
+                setCurrentTimer(longBreakDuration)
                 setTimeLeft(getMinutesAsSeconds(longBreakDuration));
-                console.log("Auto-changing from '" + selectedDuration + "' duration to: long-break")
+                console.log("Auto-changing from '" + selectedTimer + "' duration to: long-break")
                 setSessionCounter(0);
                 console.log("Current session: long-break", sessionCounter + 1)
-                setSelectedDuration("long-break")
+                setSelectedTimer("long-break")
             }
         }
 
     };
 
-    // Manages the transition between the three durations when the user presses on them.
-    const handleDurationChange = (duration) => {
-        console.log(duration + " was selected by USER")
-        switch (duration) {
+    // Manages the transition between the three timers when the user presses on them.
+    const handleManualTimerChange = (pressedTimer) => {
+        console.log(pressedTimer + " was selected by USER")
+        switch (pressedTimer) {
             case "pomodoro":
                 setSessionCounter(1)
                 break;
@@ -89,10 +91,10 @@ function PomodoroTimer() {
             case "long-break":
                 setSessionCounter(0)
         }
-        let timeDuration = durationMap.get(duration)
+        let timeDuration = timerMinutesMap.get(pressedTimer)
         clearInterval(intervalRef.current)
-        setSelectedDuration(duration)
-        setCurrentDuration(timeDuration)
+        setSelectedTimer(pressedTimer)
+        setCurrentTimer(timeDuration)
         setTimeLeft(getMinutesAsSeconds(timeDuration))
         setIsPlaying(false)
     };
@@ -111,11 +113,11 @@ function PomodoroTimer() {
     // Restarts the timer when the user presses the restart button.
     const handleRestart = () => {
         console.log("Restart was pressed")
-        setTimeLeft(getMinutesAsSeconds(currentDuration));
+        setTimeLeft(getMinutesAsSeconds(currentTimer));
         setIsPlaying(false)
     }
 
-    // Opens the settings window when the user presses the settings button
+    // Opens the settings modal when the user presses the settings button
     const handleSettings = () => {
         setSettingsOpen(true)
     }
@@ -130,7 +132,7 @@ function PomodoroTimer() {
 
         if (isPlaying && timeLeft === 0) {
             console.log("FIX: TimeLeft equals 0 and Play button has been pressed by user")
-            handleAutomaticDurationChange()
+            handleAutomaticTimerChange()
             return;
         }
         if (isPlaying) {
@@ -145,20 +147,20 @@ function PomodoroTimer() {
 
         return () => clearInterval(intervalRef.current);
 
-    }, [isPlaying, selectedDuration]);
+    }, [isPlaying, selectedTimer]);
 
-    // Stops the timer when timeLeft reaches 0 and calls handleAutomaticDurationChange.
+    // Stops the timer when timeLeft reaches 0 and calls handleAutomaticTimerChange.
     useEffect(() => {
         if (timeLeft <= 0) {
             console.log("Time has stopped (reached 0s)")
             clearInterval(intervalRef.current)
             intervalRef.current = setInterval(() => {
-                handleAutomaticDurationChange()
+                handleAutomaticTimerChange()
             }, 1000)
         }
     }, [timeLeft <= 0]);
 
-    // Adds and syncs the timer to the webpage's title.
+    // Adds and syncs the timer to the tab title.
     useEffect(() => {
         document.title = formatTime(timeLeft) + " | Simply Another Pomodoro Timer"
     }, [timeLeft]);
@@ -189,25 +191,25 @@ function PomodoroTimer() {
 
     // Sets the changed timers (through settings)
     useEffect(() => {
-        if (settingsOpen && selectedDuration === "pomodoro") {
-            setCurrentDuration(pomodoroDuration)
+        if (settingsOpen && selectedTimer === "pomodoro") {
+            setCurrentTimer(pomodoroDuration)
         }
     }, [pomodoroDuration]);
 
     useEffect(() => {
-        if (settingsOpen && selectedDuration === "short-break") {
-            setCurrentDuration(shortBreakDuration)
+        if (settingsOpen && selectedTimer === "short-break") {
+            setCurrentTimer(shortBreakDuration)
         }
     }, [shortBreakDuration]);
 
     useEffect(() => {
-        if (settingsOpen && selectedDuration === "long-break") {
-            setCurrentDuration(longBreakDuration)
+        if (settingsOpen && selectedTimer === "long-break") {
+            setCurrentTimer(longBreakDuration)
         }
     }, [longBreakDuration]);
 
     useEffect(() => {
-        setTimeLeft(getMinutesAsSeconds(currentDuration))
+        setTimeLeft(getMinutesAsSeconds(currentTimer))
         setIsPlaying(false)
     }, [settingsOpen]);
 
@@ -221,30 +223,32 @@ function PomodoroTimer() {
         <div id="pomodoro-timer-container" className="flex flex-col gap-8 [@media(max-height:350px)]:gap-4">
 
             {settingsOpen && (
-                <SettingsWindow
+                <SettingsModal
                     close={() => setSettingsOpen(false)}
                     pomodoroDuration={pomodoroDuration}
                     shortBreakDuration={shortBreakDuration}
                     longBreakDuration={longBreakDuration}
                     alarmVolume={alarmVolume}
-                    setPomodoroDuration={setPomodoroDuration}
+                    setPomodoroDuration={setpomodoroDuration}
                     setShortBreakDuration={setShortBreakDuration}
                     setLongBreakDuration={setLongBreakDuration}
                     setAlarmVolume={setAlarmVolume}
                 />
             )}
 
-            {isInfoOpen && <InfoModal close={() => setIsInfoOpen(false)} />}
+            {isInfoOpen &&
+                <InfoModal close={() => setIsInfoOpen(false)}/>
+            }
 
             <div id="pomodoro-buttons-and-timer" className="text-center p-[24px] bg-white rounded-[25px] shadow-[15px_23px_50px_rgb(148,118,174)] flex flex-col justify-center w-[616px] max-[650px]:w-[95vw]">
 
                 <div id="pomodoro-selection-buttons" className="flex flex-row justify-between gap-3 max-[616px]:gap-[2vw]">
-                    <PomodoroRadioButton inputValue="pomodoro" inputName="pomodoro" label="Pomodoro" isChecked={selectedDuration === "pomodoro"} onClick={() => handleDurationChange("pomodoro")}/>
-                    <PomodoroRadioButton inputValue="short-break" inputName="pomodoro" label="Short break" isChecked={selectedDuration === "short-break"} onClick={() => handleDurationChange("short-break")}/>
-                    <PomodoroRadioButton inputValue="long-break" inputName="pomodoro" label="Long break" isChecked={selectedDuration === "long-break"} onClick={() => handleDurationChange("long-break")}/>
+                    <PomodoroRadioButton inputValue="pomodoro" inputName="pomodoro" label="Pomodoro" isChecked={selectedTimer === "pomodoro"} onClick={() => handleManualTimerChange("pomodoro")}/>
+                    <PomodoroRadioButton inputValue="short-break" inputName="pomodoro" label="Short break" isChecked={selectedTimer === "short-break"} onClick={() => handleManualTimerChange("short-break")}/>
+                    <PomodoroRadioButton inputValue="long-break" inputName="pomodoro" label="Long break" isChecked={selectedTimer === "long-break"} onClick={() => handleManualTimerChange("long-break")}/>
                 </div>
                 <div id="timer" className="font-rubik text-[150px] tabular-nums tracking-[-6px] text-[#464646] [@media(max-height:670px)]:text-[50px] [@media(max-height:670px)]:tracking-[-2px] max-[616px]:text-[24vw] max-[616px]:tracking-[-1vw]">
-                    <div key={selectedDuration} className="animate-slideIn">
+                    <div key={selectedTimer} className="animate-slideIn">
                         <h1 key={timeLeft} className={`${timeLeft <= 3 ? "animate-zoomOut" : ""}`}>{formatTime(timeLeft)}</h1>
                     </div>
                 </div>
@@ -256,9 +260,9 @@ function PomodoroTimer() {
 
             </div>
 
-            {/* TODO: REFACTOR names for clarity, ADD webpage icon*/}
+            {/* TODO: ADD webpage icon*/}
             {/* TODO EXTRAS: ADD next button (+behavior), ADD Spotify playlist or Youtube radio, MODULARIZE things better. SETTINGS: ability to DISABLE long-break and to CHOOSE alarm sfx*/}
-            {/* FINISHED: Add player icons, add box-shadow to icons, make buttons component for the top buttons, add timer, add the info button, CHANGE buttons to radios? ADD startup animation (fade-in of main-container div, ADD timer behavior, ADD default alarm, ADD timer transition between durations, ADD settings behavior (choose pomodoros+custom, alarm volume, make settings RESPONSIVE, ADD transition animation to settings, ADD info behavior))*/}
+            {/* FINISHED: Add player icons, add box-shadow to icons, make buttons component for the top buttons, add timer, add the info button, CHANGE buttons to radios? ADD startup animation (fade-in of main-container div, ADD timer behavior, ADD default alarm, ADD timer transition between durations, ADD settings behavior (choose pomodoros+custom, alarm volume, make settings RESPONSIVE, ADD transition animation to settings, ADD info behavior, REFACTOR names for clarity))*/}
             {/* FINISHED FIX 1: When pausing at 00:00, timer doesn't continue if "play" is pressed again, and alarm keeps replaying.*/}
             {/* FINISHED FIX 2: When pausing and un-pausing, it restarts the interval timeout, un-syncing the alarm sfx.*/}
 

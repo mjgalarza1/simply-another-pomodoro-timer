@@ -35,6 +35,7 @@ function InfoModal({close}) {
                     ${isOpening ? "animate-settingsSlideIn" : ""}
                     ${isClosing ? "animate-settingsSlideOut" : ""}
                 `}>
+
                 <h2 className="text-2xl font-bold text-gray-800">What is the Pomodoro Technique?</h2>
                 <p className="text-gray-600 mt-2">
                     The Pomodoro method is a time management technique that divides work into 25-minute intervals,

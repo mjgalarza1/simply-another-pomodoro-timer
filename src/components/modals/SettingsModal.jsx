@@ -1,8 +1,8 @@
-import TimerInput from "./TimerInput.jsx";
-import CloseButton from "../assets/imgs/icons/close-svgrepo-com.svg";
+import TimerInput from "../TimerInput.jsx";
+import CloseButton from "../../assets/imgs/icons/close-svgrepo-com.svg";
 import {useEffect, useState} from "react";
 
-function SettingsWindow({ close, pomodoroDuration, shortBreakDuration, longBreakDuration, alarmVolume, setPomodoroDuration, setShortBreakDuration, setLongBreakDuration, setAlarmVolume }) {
+function SettingsModal({ close, pomodoroDuration, shortBreakDuration, longBreakDuration, alarmVolume, setPomodoroDuration, setShortBreakDuration, setLongBreakDuration, setAlarmVolume }) {
 
     const [isOpening, setIsOpening] = useState(true);
     const [isClosing, setIsClosing] = useState(false)
@@ -21,7 +21,7 @@ function SettingsWindow({ close, pomodoroDuration, shortBreakDuration, longBreak
         volumeSlider.style.background = `linear-gradient(to right, #5F6379 ${alarmVolume * 100}%, #FFFFFF ${alarmVolume * 100}%)`;
     }, [alarmVolume]);
 
-    // Disables body overflow when SettingsWindow is open
+    // Disables body overflow when SettingsModal is open
     useEffect(() => {
         document.body.style.overflow = "hidden";
         return () => {
@@ -87,8 +87,7 @@ function SettingsWindow({ close, pomodoroDuration, shortBreakDuration, longBreak
                 </div>
             </div>
         </div>
-
-)
+    )
 }
 
-export default SettingsWindow
+export default SettingsModal
