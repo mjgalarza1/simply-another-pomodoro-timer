@@ -42,7 +42,7 @@ input[type="range"]::-webkit-slider-thumb {
   width: 25px;
   height: 25px;
   border-radius: 50%;
-  border: 2px solid #464646;
+  border: 2px solid #5F6379;
   background-color: #FFFFFF;
   cursor: pointer;
 }
@@ -51,7 +51,7 @@ input[type="range"]::-moz-range-thumb {
   width: 25px;
   height: 25px;
   border-radius: 50%;
-  border: 2px solid #464646;
+  border: 2px solid #5F6379;
   background-color: #FFFFFF;
   cursor: pointer;
 }
