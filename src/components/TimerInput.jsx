@@ -3,7 +3,7 @@ const TimerInput = ({title,minutes,state}) => {
     const handleInputChange = (e) => {
         const value = e.target.value;
 
-        if (value === "" || (/^[1-9][0-9]{0,2}$/.test(value))) {
+        if ((/^[1-9][0-9]{0,2}$/.test(value))) {
             state(value);
         }
     };
