@@ -35,7 +35,7 @@ function InfoModal({close}) {
                     ${isOpening ? "animate-settingsSlideIn" : ""}
                     ${isClosing ? "animate-settingsSlideOut" : ""}
                 `}>
-                <h2 className="text-2xl font-bold text-gray-800">What is the Pomodoro method?</h2>
+                <h2 className="text-2xl font-bold text-gray-800">What is the Pomodoro Technique?</h2>
                 <p className="text-gray-600 mt-2">
                     The Pomodoro method is a time management technique that divides work into 25-minute intervals,
                     followed by short breaks, in order to help you stay productive.
@@ -80,6 +80,11 @@ function InfoModal({close}) {
                             <a href="https://www.svgrepo.com/" target="_blank" className="text-sky-500"> SVG Repo</a>
                         </span>
                     </li>
+
+                </p>
+
+                <p className="text-gray-600 mt-2 text-xs">
+                    This web app was inspired by the <a href="https://www.pomodorotechnique.com" target="_blank" className="text-sky-500">technique</a> developed by <a href="https://www.francescocirillo.com" target="_blank" className="text-sky-500">Francesco Cirillo</a>.
                 </p>
 
                 <button onClick={() => setIsClosing(true)}
