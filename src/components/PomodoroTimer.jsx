@@ -121,30 +121,42 @@ function PomodoroTimer() {
 
     // Starts and pauses the timer using an interval.
     useEffect(() => {
-
         if (isPlaying && timeLeft === 0) {
             handleAutomaticTimerChange()
             return;
         }
+
         if (isPlaying) {
+            const startTime = Date.now()
+            const targetTime = startTime + timeLeft * 1000
+
             intervalRef.current = setInterval(() => {
-                setTimeLeft(prev => Math.max(prev - 1, 0))
+                const now = Date.now()
+                const remaining = Math.max(Math.round((targetTime - now) / 1000), 0)
+                setTimeLeft(remaining)
             }, 1000)
         } else {
             clearInterval(intervalRef.current)
         }
 
         return () => clearInterval(intervalRef.current);
-
     }, [isPlaying, selectedTimer]);
 
     // Stops the timer when timeLeft reaches 0 and calls handleAutomaticTimerChange.
     useEffect(() => {
         if (timeLeft <= 0) {
             clearInterval(intervalRef.current)
-            intervalRef.current = setInterval(() => {
-                handleAutomaticTimerChange()
-            }, 1000)
+
+            const startTime = Date.now();
+
+            const timeoutId = setTimeout(() => {
+                const elapsed = Math.floor((Date.now() - startTime) / 1000);
+                if (elapsed >= 1) {
+                    handleAutomaticTimerChange();
+                }
+            }, 1000);
+
+            return () => clearTimeout(timeoutId);
         }
     }, [timeLeft <= 0]);
 
