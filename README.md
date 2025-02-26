@@ -8,6 +8,9 @@ Stay focused, boost productivity, and manage your work sessions effectively with
 ## 📸 Preview
 <img src="https://i.ibb.co/LzL69bRc/Simply-Another-Pomodoro-Timer-Preview.gif" alt="Simply-Another-Pomodoro-Timer-Preview" border="0">
 
+## 🚀 Live Demo
+🔗 [Try it here](https://simplyanotherpomodorotimer.netlify.app)
+
 ## ✨ Features
 ✔️ **Customizable timers** – Adjust work and break durations.  
 ✔️ **Chill and simple UI** – Clean, distraction-free design.  
