@@ -15,6 +15,13 @@ function SettingsModal({ close, pomodoroDuration, shortBreakDuration, longBreakD
         setIsClosing(true)
     }
 
+    // Handles closing the modal when clicking outside of it
+    const handleCloseOnClickOutside = (event) => {
+        if (event.target.id === "settings-modal-container") {
+            handleClosing();
+        }
+    };
+
     // Dynamically changes the volume bar color.
     useEffect(() => {
         const volumeSlider = document.getElementById("volume-slider");
@@ -40,11 +47,11 @@ function SettingsModal({ close, pomodoroDuration, shortBreakDuration, longBreakD
     }, [isClosing]);
 
     return (
-        <div id="modal-container" className={
+        <div id="settings-modal-container" className={
             `fixed inset-0 flex justify-center items-center bg-black/50 backdrop-blur-[35px] z-50 p-4
             ${isOpening ? "animate-settingsFadeIn" : ""}
-            ${isClosing ? "animate-settingsFadeOut" : ""}
-            `}>
+            ${isClosing ? "animate-settingsFadeOut" : ""}`}
+            onClick={handleCloseOnClickOutside}>
 
             <div id="settings-container" className={
                 `rounded-2xl bg-[#5F6379] shadow-[0_15px_20px_0_rgba(0,0,0,0.4)] my-6 max-[560px]:w-[95vw] max-h-full overflow-y-auto

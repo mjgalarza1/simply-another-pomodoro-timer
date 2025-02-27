@@ -23,15 +23,22 @@ function InfoModal({close}) {
         }
     }, [isClosing]);
 
+    // Handles closing the modal when clicking outside of it
+    const handleCloseOnClickOutside = (event) => {
+        if (event.target.id === "info-modal-container") {
+            setIsClosing(true);
+        }
+    };
+
     return (
-        <div className={
+        <div id="info-modal-container" className={
             `fixed inset-0 flex justify-center items-center bg-black/50 backdrop-blur-md z-50 p-4
             ${isOpening ? "animate-settingsFadeIn" : ""}
-            ${isClosing ? "animate-settingsFadeOut" : ""}
-            `}>
+            ${isClosing ? "animate-settingsFadeOut" : ""}`}
+            onClick={handleCloseOnClickOutside}>
 
             <div className={
-                    `bg-white rounded-2xl p-6 max-w-lg w-full shadow-lg overflow-y-auto max-h-[80vh]
+                    `bg-white rounded-2xl p-6 max-w-lg w-full shadow-[0_15px_20px_0_rgba(0,0,0,0.4)] overflow-y-auto max-h-[80vh]
                     ${isOpening ? "animate-settingsSlideIn" : ""}
                     ${isClosing ? "animate-settingsSlideOut" : ""}
                 `}>
