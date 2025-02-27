@@ -17,6 +17,7 @@ function PomodoroTimer() {
 
     const [selectedTimer, setSelectedTimer] = useState("pomodoro")
     const [isPlaying, setIsPlaying] = useState(false)
+    const [isTimerAboutToChange, setIsTimerAboutToChange] = useState(false)
 
     const [pomodoroDuration, setPomodoroDuration] = useState(25)
     const [shortBreakDuration, setShortBreakDuration] = useState(5)
@@ -27,7 +28,7 @@ function PomodoroTimer() {
     const [sessionCounter, setSessionCounter] = useState(1)
 
     const [timeLeft, setTimeLeft] = useState(currentTimer * 60)
-    const intervalRef = useRef(null)
+    const workerRef = useRef(null);
 
     const preAlarmRef = useRef(new Audio(PreAlarm))
     const alarmRef = useRef(new Audio(DefaultAlarm))
@@ -65,11 +66,13 @@ function PomodoroTimer() {
                 setTimeLeft(getMinutesAsSeconds(timeDuration));
                 setSessionCounter(sessionCounter + 1);
                 setSelectedTimer(nextPomodoroSequence)
+                workerRef.current.postMessage({ command: "start", duration: getMinutesAsSeconds(timeDuration) });
             } else {
                 setCurrentTimer(longBreakDuration)
                 setTimeLeft(getMinutesAsSeconds(longBreakDuration));
                 setSessionCounter(0);
                 setSelectedTimer("long-break")
+                workerRef.current.postMessage({ command: "start", duration: getMinutesAsSeconds(longBreakDuration) });
             }
         }
 
@@ -88,19 +91,21 @@ function PomodoroTimer() {
                 setSessionCounter(0)
         }
         let timeDuration = timerMinutesMap.get(pressedTimer)
-        clearInterval(intervalRef.current)
         setSelectedTimer(pressedTimer)
         setCurrentTimer(timeDuration)
         setTimeLeft(getMinutesAsSeconds(timeDuration))
         setIsPlaying(false)
+        workerRef.current.postMessage({ command: "stop" });
     };
 
     // Sets the isPlaying to true/false when the user presses the play/pause button.
     const handlePlay = () => {
         if (isPlaying) {
             setIsPlaying(false)
+            workerRef.current.postMessage({ command: "stop" });
         } else {
             setIsPlaying(true)
+            workerRef.current.postMessage({ command: "start", duration: timeLeft });
         }
     }
 
@@ -108,62 +113,46 @@ function PomodoroTimer() {
     const handleRestart = () => {
         setTimeLeft(getMinutesAsSeconds(currentTimer));
         setIsPlaying(false)
+        workerRef.current.postMessage({ command: "stop" });
     }
 
-    // Opens the settings modal when the user presses the settings button
+    // Opens the settings modal when the user presses the settings button.
     const handleSettings = () => {
         setSettingsOpen(true)
     }
 
+    // Applies timers durations when changes are made in the settings.
     const handleSettingsTimerChange = () => {
         setApplyingConfiguration(true)
     }
 
-    // Starts and pauses the timer using an interval.
+    // Starts and pauses the timer using a Web Worker.
     useEffect(() => {
-        if (isPlaying && timeLeft === 0) {
+        if (!workerRef.current) {
+            workerRef.current = new Worker(new URL("../utils/timerWorker.js", import.meta.url));
+        }
+
+        workerRef.current.onmessage = (e) => {
+            setTimeLeft(e.data);
+            document.title = formatTime(e.data) + " | Simply Another Pomodoro Timer"
+            if (e.data < 1) {
+                setIsTimerAboutToChange(true)
+            }
+        };
+    }, []);
+
+    // Makes the handleAutomaticTimerChange to trigger through a useEffect (it won't trigger it properly otherwise)
+    useEffect(() => {
+        if (isTimerAboutToChange) {
             handleAutomaticTimerChange()
-            return;
+            setIsTimerAboutToChange(false)
         }
+    }, [isTimerAboutToChange]);
 
-        if (isPlaying) {
-            const startTime = Date.now()
-            const targetTime = startTime + timeLeft * 1000
-
-            intervalRef.current = setInterval(() => {
-                const now = Date.now()
-                const remaining = Math.max(Math.round((targetTime - now) / 1000), 0)
-                setTimeLeft(remaining)
-            }, 1000)
-        } else {
-            clearInterval(intervalRef.current)
-        }
-
-        return () => clearInterval(intervalRef.current);
-    }, [isPlaying, selectedTimer]);
-
-    // Stops the timer when timeLeft reaches 0 and calls handleAutomaticTimerChange.
-    useEffect(() => {
-        if (timeLeft <= 0) {
-            clearInterval(intervalRef.current)
-
-            const startTime = Date.now();
-
-            const timeoutId = setTimeout(() => {
-                const elapsed = Math.floor((Date.now() - startTime) / 1000);
-                if (elapsed >= 1) {
-                    handleAutomaticTimerChange();
-                }
-            }, 1000);
-
-            return () => clearTimeout(timeoutId);
-        }
-    }, [timeLeft <= 0]);
-
-    // Adds and syncs the timer to the tab title.
+    // Adds and syncs the timer to the tab title when timer is playing/pausing or changing.
     useEffect(() => {
         document.title = formatTime(timeLeft) + " | Simply Another Pomodoro Timer"
-    }, [timeLeft]);
+    }, [selectedTimer, isPlaying]);
 
     // Plays the pre-alarm sfx when timeLeft is below three, and the alarm when timeLeft equals zero.
     useEffect(() => {
@@ -208,8 +197,7 @@ function PomodoroTimer() {
 
     useEffect(() => {
         if (applyingConfiguration) {
-            setTimeLeft(getMinutesAsSeconds(currentTimer));
-            setIsPlaying(false)
+            handleRestart()
             setApplyingConfiguration(false)
         }
     }, [settingsOpen]);
@@ -251,7 +239,7 @@ function PomodoroTimer() {
                 </div>
                 <div id="timer" className="font-rubik text-[150px] tabular-nums tracking-[-6px] text-[#464646] [@media(max-height:670px)]:text-[50px] [@media(max-height:670px)]:tracking-[-2px] max-[616px]:text-[24vw] max-[616px]:tracking-[-1vw]">
                     <div key={selectedTimer} className="animate-slideIn">
-                        <h1 key={timeLeft} className={`${timeLeft <= 3 ? "animate-zoomOut" : ""}`}>{formatTime(timeLeft)}</h1>
+                        <h1 key={timeLeft} className={`${timeLeft <= 3 && timeLeft > 0 ? "animate-zoomOut" : ""}`}>{formatTime(Math.max(timeLeft, 1))}</h1>
                     </div>
                 </div>
                 <div id="info-button" className="relative">
