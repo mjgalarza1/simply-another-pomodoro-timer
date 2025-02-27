@@ -114,6 +114,7 @@ function PomodoroTimer() {
         setTimeLeft(getMinutesAsSeconds(currentTimer));
         setIsPlaying(false)
         workerRef.current.postMessage({ command: "stop" });
+        document.title = formatTime(getMinutesAsSeconds(currentTimer)) + " | Simply Another Pomodoro Timer"
     }
 
     // Opens the settings modal when the user presses the settings button.
