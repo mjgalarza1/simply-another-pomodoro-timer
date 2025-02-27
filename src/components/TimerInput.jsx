@@ -3,9 +3,20 @@ const TimerInput = ({title,minutes,state,handler}) => {
     const handleInputChange = (e) => {
         const value = e.target.value;
 
-        if ((/^[1-9][0-9]{0,2}$/.test(value))) {
+        if (value === "") {
+            state("");
+            return;
+        }
+
+        if (/^[1-9][0-9]{0,2}$/.test(value)) {
             state(value);
             handler();
+        }
+    };
+
+    const handleBlur = () => {
+        if (minutes === "") {
+            state("1");
         }
     };
 
@@ -18,6 +29,7 @@ const TimerInput = ({title,minutes,state,handler}) => {
                 className="border p-2 border-[#5F6379] rounded-[8px] w-full text-center font-fredoka text-[26px] text-[#5F6379] w-full h-12"
                 value={minutes}
                 onChange={handleInputChange}
+                onBlur={handleBlur}
                 inputMode="numeric"
                 pattern="[0-9]*"
             />
