@@ -17,6 +17,7 @@ Stay focused, boost productivity, and manage your work sessions effectively with
 ✔️ **Lightweight & Fast** – Built with Vite for optimal performance.  
 ✔️ **Responsive design** – Works on desktop and mobile devices.  
 ✔️ **No sign-up required** – Just open and start your session.  
+✔️ **Additional settings** – Adjust alarm volume, toggle long breaks, and more upcoming options!
 
 ## 🛠️ Tech Stack
 - **Frontend:** React, Vite, Tailwind CSS
@@ -55,7 +56,7 @@ Planned improvements and upcoming features:
 - 🌙 **Dark mode** – Toggle between light and dark themes.
 - 🎵 **Music integration** – Play music while working.
 - ⚙️ **Advanced settings**:
-  - Enable/disable **long breaks**.
+  - ~~Enable/disable long breaks~~ ✅ *(Now available!)*
   - Choose custom **alarm sounds**.
 - 🛠️ **Better modularization** – Improve code structure for maintainability.
 
