@@ -1,6 +1,6 @@
 const PomodoroRadioButton = ({inputValue,inputName,label,isChecked,onClick}) => {
     return (
-        <label className="w-[200px]">
+        <label className="w-full">
 
             <input type="radio" id={inputValue} name={inputName} value={inputValue} checked={isChecked} onChange={onClick} className="hidden peer" />
             <div

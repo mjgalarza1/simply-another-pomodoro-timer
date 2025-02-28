@@ -1,4 +1,4 @@
-const TimerInput = ({title,minutes,state,handler}) => {
+const TimerInput = ({title,minutes,state,handler,disabled=false}) => {
 
     const handleInputChange = (e) => {
         const value = e.target.value;
@@ -26,12 +26,13 @@ const TimerInput = ({title,minutes,state,handler}) => {
             <input
                 id={title}
                 type="text"
-                className="border p-2 border-[#5F6379] rounded-[8px] w-full text-center font-fredoka text-[26px] text-[#5F6379] w-full h-12"
+                className="border p-2 border-[#5F6379] rounded-[8px] w-full text-center font-fredoka text-[26px] text-[#5F6379] w-full h-12 disabled:bg-[#e2e5ef]"
                 value={minutes}
                 onChange={handleInputChange}
                 onBlur={handleBlur}
                 inputMode="numeric"
                 pattern="[0-9]*"
+                disabled={disabled}
             />
         </div>
     )

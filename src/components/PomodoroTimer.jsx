@@ -38,6 +38,8 @@ function PomodoroTimer() {
     const [applyingConfiguration, setApplyingConfiguration] = useState(false)
     const [isInfoOpen, setIsInfoOpen] = useState(false);
 
+    const [isLongBreakEnabled, setIsLongBreakEnabled] = useState(true)
+
     const pomodoroSequenceMap = new Map([
         ["pomodoro", "short-break"],
         ["short-break", "pomodoro"],
@@ -59,12 +61,13 @@ function PomodoroTimer() {
     const handleAutomaticTimerChange = () => {
 
         if (isPlaying) {
-            if (sessionCounter < 7) {
+
+            if (sessionCounter < 7 || !isLongBreakEnabled) {
                 let nextPomodoroSequence = pomodoroSequenceMap.get(selectedTimer)
                 let timeDuration = timerMinutesMap.get(nextPomodoroSequence)
                 setCurrentTimer(timeDuration)
                 setTimeLeft(getMinutesAsSeconds(timeDuration));
-                setSessionCounter(sessionCounter + 1);
+                isLongBreakEnabled && setSessionCounter(sessionCounter + 1)
                 setSelectedTimer(nextPomodoroSequence)
                 workerRef.current.postMessage({ command: "start", duration: getMinutesAsSeconds(timeDuration) });
             } else {
@@ -196,10 +199,15 @@ function PomodoroTimer() {
         }
     }, [longBreakDuration]);
 
+    // Applies the configuration after the settings modal is closed
     useEffect(() => {
         if (applyingConfiguration) {
-            handleRestart()
+            handleManualTimerChange(selectedTimer)
             setApplyingConfiguration(false)
+
+            if (selectedTimer === "long-break" && !isLongBreakEnabled) {
+                handleManualTimerChange("pomodoro")
+            }
         }
     }, [settingsOpen]);
 
@@ -224,6 +232,8 @@ function PomodoroTimer() {
                     setLongBreakDuration={setLongBreakDuration}
                     setAlarmVolume={setAlarmVolume}
                     handleSettingsTimerChange={handleSettingsTimerChange}
+                    isLongBreakEnabled={isLongBreakEnabled}
+                    setIsLongBreakEnabled={setIsLongBreakEnabled}
                 />
             )}
 
@@ -233,10 +243,10 @@ function PomodoroTimer() {
 
             <div id="pomodoro-buttons-and-timer" className="text-center p-[24px] bg-white rounded-[25px] shadow-[15px_23px_50px_rgb(148,118,174)] flex flex-col justify-center w-[616px] max-[650px]:w-[95vw]">
 
-                <div id="pomodoro-selection-buttons" className="flex flex-row justify-between gap-3 max-[616px]:gap-[2vw]">
+                <div id="pomodoro-selection-buttons" className="flex flex-row justify-evenly gap-3 max-[616px]:gap-[2vw]">
                     <PomodoroRadioButton inputValue="pomodoro" inputName="pomodoro" label="Pomodoro" isChecked={selectedTimer === "pomodoro"} onClick={() => handleManualTimerChange("pomodoro")}/>
                     <PomodoroRadioButton inputValue="short-break" inputName="pomodoro" label="Short break" isChecked={selectedTimer === "short-break"} onClick={() => handleManualTimerChange("short-break")}/>
-                    <PomodoroRadioButton inputValue="long-break" inputName="pomodoro" label="Long break" isChecked={selectedTimer === "long-break"} onClick={() => handleManualTimerChange("long-break")}/>
+                    {isLongBreakEnabled && <PomodoroRadioButton inputValue="long-break" inputName="pomodoro" label="Long break" isChecked={selectedTimer === "long-break"} onClick={() => handleManualTimerChange("long-break")}/>}
                 </div>
                 <div id="timer" className="font-rubik text-[150px] tabular-nums tracking-[-6px] text-[#464646] [@media(max-height:670px)]:text-[50px] [@media(max-height:670px)]:tracking-[-2px] max-[616px]:text-[24vw] max-[616px]:tracking-[-1vw]">
                     <div key={selectedTimer} className="animate-slideIn">

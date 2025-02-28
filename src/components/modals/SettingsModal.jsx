@@ -1,10 +1,11 @@
 import TimerInput from "../TimerInput.jsx";
 import CloseButton from "../../assets/imgs/icons/close-svgrepo-com.svg";
 import {useEffect, useState} from "react";
+import ToggleButton from "../buttons/ToggleButton.jsx";
 
-function SettingsModal({ close, pomodoroDuration, shortBreakDuration, longBreakDuration, alarmVolume, setPomodoroDuration, setShortBreakDuration, setLongBreakDuration, setAlarmVolume, handleSettingsTimerChange }) {
+function SettingsModal({ close, pomodoroDuration, shortBreakDuration, longBreakDuration, alarmVolume, setPomodoroDuration, setShortBreakDuration, setLongBreakDuration, setAlarmVolume, handleSettingsTimerChange, isLongBreakEnabled, setIsLongBreakEnabled }) {
 
-    const [isOpening, setIsOpening] = useState(true);
+    const [isOpening, setIsOpening] = useState(true)
     const [isClosing, setIsClosing] = useState(false)
 
     const handleVolume = (event) => {
@@ -70,13 +71,13 @@ function SettingsModal({ close, pomodoroDuration, shortBreakDuration, longBreakD
 
                 <div id="settings-wrapper"
                      className="flex flex-col shadow-[inset_0px_6px_14px_0px_rgba(95,99,121,0.15)] px-6 bg-white">
-                    <div id="timers-wrapper" className="flex flex-row gap-8 py-6 max-[470px]:flex-col">
+                    <div id="timers-wrapper" className="flex flex-row gap-8 py-6 max-[470px]:flex-col max-[470px]:gap-1">
                         <TimerInput title="Pomodoro" minutes={pomodoroDuration} state={setPomodoroDuration} handler={handleSettingsTimerChange}/>
                         <TimerInput title="Short break" minutes={shortBreakDuration} state={setShortBreakDuration} handler={handleSettingsTimerChange}/>
-                        <TimerInput title="Long break" minutes={longBreakDuration} state={setLongBreakDuration} handler={handleSettingsTimerChange}/>
+                        <TimerInput title="Long break" minutes={longBreakDuration} state={setLongBreakDuration} handler={handleSettingsTimerChange} disabled={!isLongBreakEnabled}/>
                     </div>
 
-                    <div id="alert-volume-wrapper" className="flex flex-col gap-2 border-t-1 border-[#B1B4C9] py-6 pb-12">
+                    <div id="alert-volume-wrapper" className="flex flex-col gap-2 border-t-1 border-[#B1B4C9] py-6 pb-10">
                         <label htmlFor="volume-slider" className="font-fredoka text-[26px] font-medium text-[#5F6379] max-[470px]:text-[6.5vw]">
                             Alarm volume: {Math.round(alarmVolume * 100)}%
                         </label>
@@ -91,6 +92,14 @@ function SettingsModal({ close, pomodoroDuration, shortBreakDuration, longBreakD
                             className="w-full h-3 rounded-full border-1 border-[#5F6379] appearance-none cursor-pointer"
                         />
                     </div>
+
+                    <div id="long-break-toggle-wrapper">
+                        <ToggleButton text="Long break" isChecked={isLongBreakEnabled} onChange={() => {
+                            setIsLongBreakEnabled(!isLongBreakEnabled)
+                            handleSettingsTimerChange()
+                        }}/>
+                    </div>
+
                 </div>
             </div>
         </div>
