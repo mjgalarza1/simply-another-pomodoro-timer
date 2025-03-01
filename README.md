@@ -52,7 +52,7 @@ Contributions are welcome! If you want to improve or modify this project, please
 ## 🔮 Future Features
 Planned improvements and upcoming features:
  
-- ⏭️ **"Next" button** – Skip to the next session manually.
+- ⏭️ ~~"Next" button – Skip to the next session manually.~~ ✅ *(Now available!)*
 - 🌙 **Dark mode** – Toggle between light and dark themes.
 - 🎵 **Music integration** – Play music while working.
 - ⚙️ **Advanced settings**:
