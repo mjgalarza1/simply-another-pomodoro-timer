@@ -1,5 +1,6 @@
 import Play from "../assets/imgs/icons/play-svgrepo-com.svg"
 import Pause from "../assets/imgs/icons/pause-svgrepo-com.svg"
+import Skip from "../assets/imgs/icons/skip-next-svgrepo-com.svg"
 import Restart from "../assets/imgs/icons/restart-svgrepo-com.svg"
 import Settings from "../assets/imgs/icons/settings-svgrepo-com.svg"
 import Info from "../assets/imgs/icons/icons8-info.svg"
@@ -39,6 +40,7 @@ function PomodoroTimer() {
     const [isInfoOpen, setIsInfoOpen] = useState(false);
 
     const [isLongBreakEnabled, setIsLongBreakEnabled] = useState(true)
+    const [isSkipButtonEnabled, setIsSkipButtonEnabled] = useState(true)
 
     const pomodoroSequenceMap = new Map([
         ["pomodoro", "short-break"],
@@ -110,6 +112,12 @@ function PomodoroTimer() {
             setIsPlaying(true)
             workerRef.current.postMessage({ command: "start", duration: timeLeft });
         }
+    }
+
+    // Skips the current session to the next
+    const handleSkip = () => {
+        workerRef.current.postMessage({ command: "stop" });
+        setIsTimerAboutToChange(true)
     }
 
     // Restarts the timer when the user presses the restart button.
@@ -234,6 +242,8 @@ function PomodoroTimer() {
                     handleSettingsTimerChange={handleSettingsTimerChange}
                     isLongBreakEnabled={isLongBreakEnabled}
                     setIsLongBreakEnabled={setIsLongBreakEnabled}
+                    isSkipButtonEnabled={isSkipButtonEnabled}
+                    setIsSkipButtonEnabled={setIsSkipButtonEnabled}
                 />
             )}
 
@@ -263,6 +273,7 @@ function PomodoroTimer() {
 
             <div id="pomodoro-player-buttons" className="flex flex-row justify-center gap-8 drop-shadow-[1px_3px_8px_rgba(94,44,164,0.71)]">
                 {isPlaying ? <PlayerButton icon={Pause} alt={"Pause Button"} onClick={() => handlePlay()} /> : <PlayerButton icon={Play} alt={"Play Button"} onClick={() => handlePlay()} />}
+                {isSkipButtonEnabled && isPlaying && <PlayerButton icon={Skip} alt={"Skip Button"} onClick={() => handleSkip()} />}
                 <PlayerButton icon={Restart} alt={"Restart Button"} onClick={() => handleRestart()} />
                 <PlayerButton icon={Settings} alt={"Settings Button"} onClick={() => handleSettings()} />
             </div>

@@ -71,7 +71,7 @@ function InfoModal({close}) {
                         <a target="_blank" href="https://icons8.com" className="text-sky-500"> Icons8</a>
                     </li>
                     <li>
-                        Play, pause, restart, and settings buttons: <br/>
+                        Play, pause, skip, restart, and settings buttons: <br/>
                         <span className="ml-4">
                             Vectors and icons by <a className="text-sky-500"
                             href="https://www.figma.com/community/file/1166831539721848736?ref=svgrepo.com"
