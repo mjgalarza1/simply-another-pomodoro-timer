@@ -64,7 +64,7 @@ Planned improvements and upcoming features:
 ## ⭐ Acknowledgments  
 - [Wallpaper by swagmister](https://wallpapers.com/wallpapers/pastel-watercolor-q4u3pgnrn42zo6zb.html) on Wallpapers.com
 - [Info](https://icons8.com/icon/lr0VUxUGGB6L/info) icon by [Icons8](https://icons8.com)
-- Play, pause, restart, and settings buttons:
+- Play, pause, skip, restart, and settings buttons:
   - Vectors and icons by [Solar Icons](https://www.figma.com/community/file/1166831539721848736) in CC Attribution License via [SVG Repo](https://www.svgrepo.com)
 - Settings Close Button:
   - Vectors and icons by [Giovana](https://www.figma.com/@d12da0b9_b193_4) in CC Attribution License via [SVG Repo](https://www.svgrepo.com)
