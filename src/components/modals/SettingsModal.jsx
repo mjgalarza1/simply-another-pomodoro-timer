@@ -3,7 +3,22 @@ import CloseButton from "../../assets/imgs/icons/close-svgrepo-com.svg";
 import {useEffect, useState} from "react";
 import ToggleButton from "../buttons/ToggleButton.jsx";
 
-function SettingsModal({ close, pomodoroDuration, shortBreakDuration, longBreakDuration, alarmVolume, setPomodoroDuration, setShortBreakDuration, setLongBreakDuration, setAlarmVolume, handleSettingsTimerChange, isLongBreakEnabled, setIsLongBreakEnabled, isSkipButtonEnabled, setIsSkipButtonEnabled }) {
+function SettingsModal({ close, timers, alarm, toggles }) {
+    const {
+        pomodoroDuration, setPomodoroDuration,
+        shortBreakDuration, setShortBreakDuration,
+        longBreakDuration, setLongBreakDuration,
+        handleSettingsTimerChange
+    } = timers;
+
+    const {
+        alarmVolume, setAlarmVolume
+    } = alarm;
+
+    const {
+        isLongBreakEnabled, setIsLongBreakEnabled,
+        isSkipButtonEnabled, setIsSkipButtonEnabled
+    } = toggles;
 
     const [isOpening, setIsOpening] = useState(true)
     const [isClosing, setIsClosing] = useState(false)

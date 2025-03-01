@@ -231,19 +231,19 @@ function PomodoroTimer() {
             {settingsOpen && (
                 <SettingsModal
                     close={() => setSettingsOpen(false)}
-                    pomodoroDuration={pomodoroDuration}
-                    shortBreakDuration={shortBreakDuration}
-                    longBreakDuration={longBreakDuration}
-                    alarmVolume={alarmVolume}
-                    setPomodoroDuration={setPomodoroDuration}
-                    setShortBreakDuration={setShortBreakDuration}
-                    setLongBreakDuration={setLongBreakDuration}
-                    setAlarmVolume={setAlarmVolume}
-                    handleSettingsTimerChange={handleSettingsTimerChange}
-                    isLongBreakEnabled={isLongBreakEnabled}
-                    setIsLongBreakEnabled={setIsLongBreakEnabled}
-                    isSkipButtonEnabled={isSkipButtonEnabled}
-                    setIsSkipButtonEnabled={setIsSkipButtonEnabled}
+                    timers={{
+                        pomodoroDuration, shortBreakDuration,
+                        longBreakDuration, setPomodoroDuration,
+                        setShortBreakDuration, setLongBreakDuration,
+                        handleSettingsTimerChange
+                    }}
+                    alarm={{
+                        alarmVolume, setAlarmVolume
+                    }}
+                    toggles={{
+                        isLongBreakEnabled, setIsLongBreakEnabled,
+                        isSkipButtonEnabled, setIsSkipButtonEnabled,
+                    }}
                 />
             )}
 
