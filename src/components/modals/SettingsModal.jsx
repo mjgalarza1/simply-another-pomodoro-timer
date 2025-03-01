@@ -54,14 +54,16 @@ function SettingsModal({ close, pomodoroDuration, shortBreakDuration, longBreakD
             ${isClosing ? "animate-settingsFadeOut" : ""}`}
             onClick={handleCloseOnClickOutside}>
 
-            <div id="settings-container" className={
-                `rounded-2xl bg-[#5F6379] shadow-[0_15px_20px_0_rgba(0,0,0,0.4)] my-6 max-[560px]:w-[95vw] max-h-full overflow-y-auto
-                ${isOpening ? "animate-settingsSlideIn" : ""}
-                ${isClosing ? "animate-settingsSlideOut" : ""}
+            <div id="settings-panel-container"
+                 className={`flex flex-col gap-0 max-h-full max-[560px]:w-[95vw]
+                    ${isOpening ? "animate-settingsSlideIn" : ""}
+                    ${isClosing ? "animate-settingsSlideOut" : ""}
                 `}>
 
-                <div id="title-wrapper" className="flex flex-row justify-between items-center py-5">
-                    <h2 id="title" className="font-fredoka text-4xl tracking-[8px] text-white pl-8 truncate max-w-full max-[470px]:tracking-[1vw] max-[470px]:text-[18px]">SETTINGS</h2>
+                <div id="title-wrapper" className="flex flex-row justify-between items-center py-5 bg-[#5F6379] rounded-t-2xl">
+                    <h2 id="title" className="font-fredoka text-4xl tracking-[8px] text-white pl-8 truncate max-w-full max-[470px]:tracking-[1vw] max-[470px]:text-[18px]">
+                        SETTINGS
+                    </h2>
                     <div id="close-button" onClick={handleClosing} className="w-[26px] h-[26px] min-w-[26px] min-h-[26px] mr-5">
                         <button className="hover:cursor-pointer">
                             <img src={CloseButton} alt="X"/>
@@ -69,47 +71,55 @@ function SettingsModal({ close, pomodoroDuration, shortBreakDuration, longBreakD
                     </div>
                 </div>
 
-                <div id="settings-wrapper"
-                     className="flex flex-col bg-white">
+                <div id="settings-container"
+                     className="rounded-b-2xl shadow-[0_15px_20px_0_rgba(0,0,0,0.4)] max-h-full overflow-y-auto">
 
-                    <div className="bg-gray-200 h-8 pl-4 flex items-center"><p>Pomodoro</p></div>
+                    <div id="settings-wrapper" className="flex flex-col bg-white">
 
-                    <div id="timers-wrapper" className="flex flex-row gap-8 p-6 pt-4 max-[470px]:flex-col max-[470px]:gap-1">
-                        <TimerInput title="Pomodoro" minutes={pomodoroDuration} state={setPomodoroDuration} handler={handleSettingsTimerChange}/>
-                        <TimerInput title="Short break" minutes={shortBreakDuration} state={setShortBreakDuration} handler={handleSettingsTimerChange}/>
-                        <TimerInput title="Long break" minutes={longBreakDuration} state={setLongBreakDuration} handler={handleSettingsTimerChange} disabled={!isLongBreakEnabled}/>
+                        <div className="bg-gray-200 h-8 pl-4 flex items-center"><p>Pomodoro</p></div>
+
+                        <div id="timers-wrapper"
+                             className="flex flex-row gap-8 p-6 pt-4 max-[470px]:flex-col max-[470px]:gap-1">
+                            <TimerInput title="Pomodoro" minutes={pomodoroDuration} state={setPomodoroDuration}
+                                        handler={handleSettingsTimerChange}/>
+                            <TimerInput title="Short break" minutes={shortBreakDuration} state={setShortBreakDuration}
+                                        handler={handleSettingsTimerChange}/>
+                            <TimerInput title="Long break" minutes={longBreakDuration} state={setLongBreakDuration}
+                                        handler={handleSettingsTimerChange} disabled={!isLongBreakEnabled}/>
+                        </div>
+
+                        <div className="bg-gray-200 h-8 pl-4 flex items-center"><p>Alarm</p></div>
+
+                        <div id="alert-volume-wrapper" className="flex flex-col gap-2 p-6 pb-10">
+                            <label htmlFor="volume-slider"
+                                   className="font-fredoka text-[26px] font-medium text-[#5F6379] max-[470px]:text-[6.5vw]">
+                                Alarm volume: {Math.round(alarmVolume * 100)}%
+                            </label>
+                            <input
+                                id="volume-slider"
+                                type="range"
+                                min="0"
+                                max="1"
+                                step="0.01"
+                                value={alarmVolume}
+                                onChange={handleVolume}
+                                className="w-full h-3 rounded-full border-1 border-[#5F6379] appearance-none cursor-pointer"
+                            />
+                        </div>
+
+                        <div className="bg-gray-200 h-8 pl-4 flex items-center"><p>Advanced</p></div>
+
+                        <div id="button-toggle-wrapper" className="flex flex-col px-6 pb-2">
+                            <ToggleButton text="Long break" isChecked={isLongBreakEnabled} onChange={() => {
+                                setIsLongBreakEnabled(!isLongBreakEnabled)
+                                handleSettingsTimerChange()
+                            }}/>
+                            <ToggleButton text="Skip button" isChecked={isSkipButtonEnabled} onChange={() => {
+                                setIsSkipButtonEnabled(!isSkipButtonEnabled)
+                            }}/>
+                        </div>
+
                     </div>
-
-                    <div className="bg-gray-200 h-8 pl-4 flex items-center"><p>Alarm</p></div>
-
-                    <div id="alert-volume-wrapper" className="flex flex-col gap-2 p-6 pb-10">
-                        <label htmlFor="volume-slider" className="font-fredoka text-[26px] font-medium text-[#5F6379] max-[470px]:text-[6.5vw]">
-                            Alarm volume: {Math.round(alarmVolume * 100)}%
-                        </label>
-                        <input
-                            id="volume-slider"
-                            type="range"
-                            min="0"
-                            max="1"
-                            step="0.01"
-                            value={alarmVolume}
-                            onChange={handleVolume}
-                            className="w-full h-3 rounded-full border-1 border-[#5F6379] appearance-none cursor-pointer"
-                        />
-                    </div>
-
-                    <div className="bg-gray-200 h-8 pl-4 flex items-center"><p>Advanced</p></div>
-
-                    <div id="button-toggle-wrapper" className="flex flex-col px-6">
-                        <ToggleButton text="Long break" isChecked={isLongBreakEnabled} onChange={() => {
-                            setIsLongBreakEnabled(!isLongBreakEnabled)
-                            handleSettingsTimerChange()
-                        }}/>
-                        <ToggleButton text="Skip button" isChecked={isSkipButtonEnabled} onChange={() => {
-                            setIsSkipButtonEnabled(!isSkipButtonEnabled)
-                        }}/>
-                    </div>
-
                 </div>
             </div>
         </div>
