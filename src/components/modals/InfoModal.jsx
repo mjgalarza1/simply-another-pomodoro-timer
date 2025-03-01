@@ -5,14 +5,6 @@ function InfoModal({close}) {
     const [isOpening, setIsOpening] = useState(true);
     const [isClosing, setIsClosing] = useState(false)
 
-    // Disables body overflow when InfoModal is open
-    useEffect(() => {
-        document.body.style.overflow = "hidden";
-        return () => {
-            document.body.style.overflow = "";
-        };
-    }, []);
-
     // Waits for fadeOut and slideOut transitions to finish before closing
     useEffect(() => {
         if (isClosing) {
@@ -33,14 +25,14 @@ function InfoModal({close}) {
     return (
         <div id="info-modal-container" className={
             `fixed inset-0 flex justify-center items-center bg-black/50 backdrop-blur-md z-50 p-4
-            ${isOpening ? "animate-settingsFadeIn" : ""}
-            ${isClosing ? "animate-settingsFadeOut" : ""}`}
+            ${isOpening && "animate-settingsFadeIn"}
+            ${isClosing && "animate-settingsFadeOut"}`}
             onClick={handleCloseOnClickOutside}>
 
             <div className={
                     `bg-white rounded-2xl p-6 max-w-lg w-full shadow-[0_15px_20px_0_rgba(0,0,0,0.4)] overflow-y-auto max-h-[80vh]
-                    ${isOpening ? "animate-settingsSlideIn" : ""}
-                    ${isClosing ? "animate-settingsSlideOut" : ""}
+                    ${isOpening && "animate-settingsSlideIn"}
+                    ${isClosing && "animate-settingsSlideOut"}
                 `}>
 
                 <h2 className="text-2xl font-bold text-gray-800">What is the Pomodoro Technique?</h2>

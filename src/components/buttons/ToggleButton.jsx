@@ -8,8 +8,12 @@ const ToggleButton = ({text,onChange,isChecked}) => {
 
             <label className="inline-flex items-center cursor-pointer">
                 <input type="checkbox" value="" name={text} className="sr-only peer" checked={isChecked} onChange={onChange}/>
-                <div
-                    className="relative w-14 h-7 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-[#3688FF]"></div>
+                <div className="
+                    relative w-14 h-7 bg-gray-200 rounded-full
+                    peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full
+                    peer-checked:after:border-white peer-checked:bg-[#3688FF] peer-focus:outline-none
+                    after:content-[''] after:absolute after:top-0.5 after:start-[4px] after:bg-white
+                    after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all"/>
             </label>
 
 

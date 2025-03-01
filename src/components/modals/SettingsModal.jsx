@@ -44,14 +44,6 @@ function SettingsModal({ close, timers, alarm, toggles }) {
         volumeSlider.style.background = `linear-gradient(to right, #5F6379 ${alarmVolume * 100}%, #FFFFFF ${alarmVolume * 100}%)`;
     }, [alarmVolume]);
 
-    // Disables body overflow when SettingsModal is open
-    useEffect(() => {
-        document.body.style.overflow = "hidden";
-        return () => {
-            document.body.style.overflow = "";
-        };
-    }, []);
-
     // Waits for fadeOut and slideOut transitions to finish before closing
     useEffect(() => {
         if (isClosing) {
@@ -65,14 +57,14 @@ function SettingsModal({ close, timers, alarm, toggles }) {
     return (
         <div id="settings-modal-container" className={
             `fixed inset-0 flex justify-center items-center bg-black/50 backdrop-blur-[35px] z-50 p-4
-            ${isOpening ? "animate-settingsFadeIn" : ""}
-            ${isClosing ? "animate-settingsFadeOut" : ""}`}
+            ${isOpening && "animate-settingsFadeIn"}
+            ${isClosing && "animate-settingsFadeOut"}`}
             onClick={handleCloseOnClickOutside}>
 
             <div id="settings-panel-container"
                  className={`flex flex-col gap-0 max-h-full max-[560px]:w-[95vw]
-                    ${isOpening ? "animate-settingsSlideIn" : ""}
-                    ${isClosing ? "animate-settingsSlideOut" : ""}
+                    ${isOpening && "animate-settingsSlideIn"}
+                    ${isClosing && "animate-settingsSlideOut"}
                 `}>
 
                 <div id="title-wrapper" className="flex flex-row justify-between items-center py-5 bg-[#5F6379] rounded-t-2xl">

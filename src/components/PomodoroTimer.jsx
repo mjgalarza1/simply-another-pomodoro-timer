@@ -219,6 +219,16 @@ function PomodoroTimer() {
         }
     }, [settingsOpen]);
 
+    // Disables body overflow when SettingsModal or InfoModal is open
+    useEffect(() => {
+        if (settingsOpen || isInfoOpen) {
+            document.body.style.overflow = "hidden";
+            return () => {
+                document.body.style.overflow = "";
+            };
+        }
+    }, [settingsOpen, isInfoOpen]);
+
     const formatTime = (seconds) => {
         const minutes = Math.floor(seconds / 60).toString().padStart(2, "0");
         const secs = (seconds % 60).toString().padStart(2, "0");
@@ -260,7 +270,7 @@ function PomodoroTimer() {
                 </div>
                 <div id="timer" className="font-rubik text-[150px] tabular-nums tracking-[-6px] text-[#464646] [@media(max-height:670px)]:text-[50px] [@media(max-height:670px)]:tracking-[-2px] max-[616px]:text-[24vw] max-[616px]:tracking-[-1vw]">
                     <div key={selectedTimer} className="animate-slideIn">
-                        <h1 key={timeLeft} className={`${timeLeft <= 3 && timeLeft > 0 ? "animate-zoomOut" : ""}`}>{formatTime(Math.max(timeLeft, 1))}</h1>
+                        <h1 key={timeLeft} className={`${timeLeft <= 3 && timeLeft > 0 && "animate-zoomOut"}`}>{formatTime(Math.max(timeLeft, 1))}</h1>
                     </div>
                 </div>
                 <div id="info-button" className="relative">
