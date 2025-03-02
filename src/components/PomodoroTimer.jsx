@@ -36,6 +36,7 @@ function PomodoroTimer() {
     const [alarmVolume, setAlarmVolume] = useState(1.0)
 
     const [settingsOpen, setSettingsOpen] = useState(false)
+    const [loaded, setLoaded] = useState(false);
     const [applyingConfiguration, setApplyingConfiguration] = useState(false)
     const [isInfoOpen, setIsInfoOpen] = useState(false);
 
@@ -138,6 +139,23 @@ function PomodoroTimer() {
         setApplyingConfiguration(true)
     }
 
+    const saveSettings = () => {
+        const savedSettings = {
+            pomodoroDuration,
+            shortBreakDuration,
+            longBreakDuration,
+            alarmVolume,
+            isLongBreakEnabled,
+            isSkipButtonEnabled
+        }
+        localStorage.setItem("pomodoroSettings", JSON.stringify(savedSettings))
+    }
+
+    const loadSettings = () => {
+        const savedSettings = localStorage.getItem("pomodoroSettings")
+        return savedSettings ? JSON.parse(savedSettings) : null
+    }
+
     // Starts and pauses the timer using a Web Worker.
     useEffect(() => {
         if (!workerRef.current) {
@@ -229,6 +247,30 @@ function PomodoroTimer() {
         }
     }, [settingsOpen, isInfoOpen]);
 
+    // Loads saved settings from localStorage and updates state on page load
+    useEffect(() => {
+        const savedSettings = loadSettings()
+
+        if (savedSettings) {
+            setPomodoroDuration(savedSettings.pomodoroDuration)
+            setShortBreakDuration(savedSettings.shortBreakDuration)
+            setLongBreakDuration(savedSettings.longBreakDuration)
+            setAlarmVolume(savedSettings.alarmVolume)
+            setIsLongBreakEnabled(savedSettings.isLongBreakEnabled)
+            setIsSkipButtonEnabled(savedSettings.isSkipButtonEnabled)
+
+        }
+
+        setLoaded(true);
+    }, [])
+
+    // Triggers a re-render to apply the loaded configuration once it's set
+    useEffect(() => {
+        if (loaded) {
+            handleManualTimerChange("pomodoro")
+        }
+    }, [loaded]);
+
     const formatTime = (seconds) => {
         const minutes = Math.floor(seconds / 60).toString().padStart(2, "0");
         const secs = (seconds % 60).toString().padStart(2, "0");
@@ -240,7 +282,10 @@ function PomodoroTimer() {
 
             {settingsOpen && (
                 <SettingsModal
-                    close={() => setSettingsOpen(false)}
+                    settings={() => {
+                        setSettingsOpen(false)
+                        saveSettings()
+                    }}
                     timers={{
                         pomodoroDuration, shortBreakDuration,
                         longBreakDuration, setPomodoroDuration,

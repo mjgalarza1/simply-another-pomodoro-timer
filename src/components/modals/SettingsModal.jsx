@@ -3,7 +3,7 @@ import CloseButton from "../../assets/imgs/icons/close-svgrepo-com.svg";
 import {useEffect, useState} from "react";
 import ToggleButton from "../buttons/ToggleButton.jsx";
 
-function SettingsModal({ close, timers, alarm, toggles }) {
+function SettingsModal({ settings, timers, alarm, toggles }) {
     const {
         pomodoroDuration, setPomodoroDuration,
         shortBreakDuration, setShortBreakDuration,
@@ -48,7 +48,7 @@ function SettingsModal({ close, timers, alarm, toggles }) {
     useEffect(() => {
         if (isClosing) {
             setTimeout(() => {
-                close()
+                settings()
                 setIsOpening(false)
             }, 150);
         }
