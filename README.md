@@ -14,6 +14,7 @@ Stay focused, boost productivity, and manage your work sessions effectively with
 ## ✨ Features
 ✔️ **Customizable timers** – Adjust work and break durations.  
 ✔️ **Chill and simple UI** – Clean, distraction-free design.  
+✔️ **Dark mode** – Toggle between light and dark themes.  
 ✔️ **Lightweight & Fast** – Built with Vite for optimal performance.  
 ✔️ **Responsive design** – Works on desktop and mobile devices.  
 ✔️ **No sign-up required** – Just open and start your session.  
@@ -52,8 +53,8 @@ Contributions are welcome! If you want to improve or modify this project, please
 ## 🔮 Future Features
 Planned improvements and upcoming features:
  
-- ⏭️ ~~"Next" button – Skip to the next session manually.~~ ✅ *(Now available!)*
-- 🌙 **Dark mode** – Toggle between light and dark themes.
+- ~~⏭️ "Next" button – Skip to the next session manually.~~ ✅ *(Now available!)*
+- ~~🌙 **Dark mode** – Toggle between light and dark themes.~~ ✅ *(Now available!)*
 - 🎵 **Music integration** – Play music while working.
 - ⚙️ **Advanced settings**:
   - ~~Enable/disable long breaks~~ ✅ *(Now available!)*
@@ -62,7 +63,8 @@ Planned improvements and upcoming features:
 
 
 ## ⭐ Acknowledgments  
-- [Wallpaper by swagmister](https://wallpapers.com/wallpapers/pastel-watercolor-q4u3pgnrn42zo6zb.html) on Wallpapers.com
+- Light-mode [wallpaper by swagmister](https://wallpapers.com/wallpapers/pastel-watercolor-q4u3pgnrn42zo6zb.html) on [wallpapers.com](https://www.wallpapers.com)
+- Dark-mode [wallpaper by Freepik](https://www.freepik.com/free-vector/night-starry-sky-background_3799982.htm#fromView=image_search_similar&page=2&position=22&uuid=416ddf40-0346-408d-8f83-fbc8aa356b3a) on [freepik.com](https://www.freepik.com)
 - [Info](https://icons8.com/icon/lr0VUxUGGB6L/info) icon by [Icons8](https://icons8.com)
 - Play, pause, skip, restart, and settings buttons:
   - Vectors and icons by [Solar Icons](https://www.figma.com/community/file/1166831539721848736) in CC Attribution License via [SVG Repo](https://www.svgrepo.com)
