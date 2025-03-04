@@ -3,7 +3,7 @@ import Pause from "../assets/imgs/icons/pause-svgrepo-com.svg"
 import Skip from "../assets/imgs/icons/skip-next-svgrepo-com.svg"
 import Restart from "../assets/imgs/icons/restart-svgrepo-com.svg"
 import Settings from "../assets/imgs/icons/settings-svgrepo-com.svg"
-import Info from "../assets/imgs/icons/icons8-info.svg"
+import InfoButton from "../components/buttons/InfoButton.jsx"
 import PreAlarm from "../assets/sfx/pre-alarm-default.mp3"
 import DefaultAlarm from "../assets/sfx/alarm-default.mp3"
 
@@ -14,7 +14,7 @@ import InfoModal from "./modals/InfoModal.jsx";
 
 import {useEffect, useRef, useState} from "react";
 
-function PomodoroTimer() {
+function PomodoroTimer({isDarkModeEnabled, setIsDarkModeEnabled}) {
 
     const [selectedTimer, setSelectedTimer] = useState("pomodoro")
     const [isPlaying, setIsPlaying] = useState(false)
@@ -146,7 +146,8 @@ function PomodoroTimer() {
             longBreakDuration,
             alarmVolume,
             isLongBreakEnabled,
-            isSkipButtonEnabled
+            isSkipButtonEnabled,
+            isDarkModeEnabled
         }
         localStorage.setItem("pomodoroSettings", JSON.stringify(savedSettings))
     }
@@ -258,7 +259,7 @@ function PomodoroTimer() {
             setAlarmVolume(savedSettings.alarmVolume)
             setIsLongBreakEnabled(savedSettings.isLongBreakEnabled)
             setIsSkipButtonEnabled(savedSettings.isSkipButtonEnabled)
-
+            setIsDarkModeEnabled(savedSettings.isDarkModeEnabled)
         }
 
         setLoaded(true);
@@ -298,6 +299,7 @@ function PomodoroTimer() {
                     toggles={{
                         isLongBreakEnabled, setIsLongBreakEnabled,
                         isSkipButtonEnabled, setIsSkipButtonEnabled,
+                        isDarkModeEnabled, setIsDarkModeEnabled
                     }}
                 />
             )}
@@ -306,21 +308,21 @@ function PomodoroTimer() {
                 <InfoModal close={() => setIsInfoOpen(false)}/>
             }
 
-            <div id="pomodoro-buttons-and-timer" className="text-center p-[24px] bg-white rounded-[25px] shadow-[15px_23px_50px_rgb(148,118,174)] flex flex-col justify-center w-[616px] max-[650px]:w-[95vw]">
+            <div id="pomodoro-buttons-and-timer" className="text-center p-[24px] bg-white rounded-[25px] shadow-[15px_23px_50px_rgb(148,118,174)] flex flex-col justify-center w-[616px] max-[650px]:w-[95vw] dark:bg-pomodoro-black">
 
                 <div id="pomodoro-selection-buttons" className="flex flex-row justify-evenly gap-3 max-[616px]:gap-[2vw]">
                     <PomodoroRadioButton inputValue="pomodoro" inputName="pomodoro" label="Pomodoro" isChecked={selectedTimer === "pomodoro"} onClick={() => handleManualTimerChange("pomodoro")}/>
                     <PomodoroRadioButton inputValue="short-break" inputName="pomodoro" label="Short break" isChecked={selectedTimer === "short-break"} onClick={() => handleManualTimerChange("short-break")}/>
                     {isLongBreakEnabled && <PomodoroRadioButton inputValue="long-break" inputName="pomodoro" label="Long break" isChecked={selectedTimer === "long-break"} onClick={() => handleManualTimerChange("long-break")}/>}
                 </div>
-                <div id="timer" className="font-rubik text-[150px] tabular-nums tracking-[-6px] text-[#464646] [@media(max-height:670px)]:text-[50px] [@media(max-height:670px)]:tracking-[-2px] max-[616px]:text-[24vw] max-[616px]:tracking-[-1vw]">
+                <div id="timer" className="font-rubik text-[150px] tabular-nums tracking-[-6px] text-pomodoro-dark-gray dark:text-white [@media(max-height:670px)]:text-[50px] [@media(max-height:670px)]:tracking-[-2px] max-[616px]:text-[24vw] max-[616px]:tracking-[-1vw]">
                     <div key={selectedTimer} className="animate-slideIn">
                         <h1 key={timeLeft} className={`${timeLeft <= 3 && timeLeft > 0 && "animate-zoomOut"}`}>{formatTime(Math.max(timeLeft, 1))}</h1>
                     </div>
                 </div>
                 <div id="info-button" className="relative">
                     <button onClick={() => setIsInfoOpen(true)} className="absolute bottom-0 right-0 -mb-3 -mr-3 w-[24px] max-[376px]:w-[20px] hover:cursor-pointer">
-                        <img src={Info} alt="Info button"/>
+                        <InfoButton/>
                     </button>
                 </div>
 

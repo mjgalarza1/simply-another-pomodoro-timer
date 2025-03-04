@@ -1,11 +1,21 @@
 import MainLogo from "./assets/imgs/simply-another-pomodoro-timer-logo.svg";
 import GithubButton from "./components/buttons/GithubButton.jsx";
 import PomodoroTimer from "./components/PomodoroTimer.jsx";
+import {useState} from "react";
 
 function App() {
+
+    const [isDarkModeEnabled, setIsDarkModeEnabled] = useState(false)
+
     return (
         <>
-            <div id="main-container" className="flex justify-center items-center h-screen min-h-[270px]">
+            <div id="main-container" className={`
+                flex justify-center items-center h-screen min-h-[270px] h-full font-bold
+                bg-[url('/pastel-background.jpg')] bg-cover
+                dark:bg-[url('/night-starry-sky-background-freepik.jpg')]
+                dark:bg-bottom dark:bg-center
+                ${isDarkModeEnabled ? "dark" : ""}
+                `}>
 
                 <div id="logo-and-pomodoro-timer-wrapper" className="flex flex-col justify-center items-center gap-3 w-[616px] animate-fadeAndZoomIn">
 
@@ -17,7 +27,7 @@ function App() {
                     </div>
 
                     <div id="pomodoro-timer-wrapper">
-                        <PomodoroTimer/>
+                        <PomodoroTimer isDarkModeEnabled={isDarkModeEnabled} setIsDarkModeEnabled={setIsDarkModeEnabled}/>
                     </div>
 
                 </div>

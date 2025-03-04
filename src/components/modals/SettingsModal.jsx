@@ -17,7 +17,8 @@ function SettingsModal({ settings, timers, alarm, toggles }) {
 
     const {
         isLongBreakEnabled, setIsLongBreakEnabled,
-        isSkipButtonEnabled, setIsSkipButtonEnabled
+        isSkipButtonEnabled, setIsSkipButtonEnabled,
+        isDarkModeEnabled, setIsDarkModeEnabled
     } = toggles;
 
     const [isOpening, setIsOpening] = useState(true)
@@ -67,7 +68,7 @@ function SettingsModal({ settings, timers, alarm, toggles }) {
                     ${isClosing && "animate-settingsSlideOut"}
                 `}>
 
-                <div id="title-wrapper" className="flex flex-row justify-between items-center py-5 bg-[#5F6379] rounded-t-2xl">
+                <div id="title-wrapper" className="flex flex-row justify-between items-center py-5 bg-pomodoro-blue-gray dark:bg-black rounded-t-2xl">
                     <h2 id="title" className="font-fredoka text-4xl tracking-[8px] text-white pl-8 truncate max-w-full max-[470px]:tracking-[1vw] max-[470px]:text-[18px]">
                         SETTINGS
                     </h2>
@@ -81,9 +82,9 @@ function SettingsModal({ settings, timers, alarm, toggles }) {
                 <div id="settings-container"
                      className="rounded-b-2xl shadow-[0_15px_20px_0_rgba(0,0,0,0.4)] max-h-full overflow-y-auto">
 
-                    <div id="settings-wrapper" className="flex flex-col bg-white">
+                    <div id="settings-wrapper" className="flex flex-col bg-white dark:bg-pomodoro-black">
 
-                        <div className="bg-gray-200 h-8 pl-4 flex items-center"><p>Pomodoro</p></div>
+                        <div className="bg-gray-200 dark:bg-pomodoro-dark-gray dark:text-white h-8 pl-4 flex items-center"><p>Pomodoro</p></div>
 
                         <div id="timers-wrapper"
                              className="flex flex-row gap-8 p-6 pt-4 max-[470px]:flex-col max-[470px]:gap-1">
@@ -95,11 +96,11 @@ function SettingsModal({ settings, timers, alarm, toggles }) {
                                         handler={handleSettingsTimerChange} disabled={!isLongBreakEnabled}/>
                         </div>
 
-                        <div className="bg-gray-200 h-8 pl-4 flex items-center"><p>Alarm</p></div>
+                        <div className="bg-gray-200 dark:bg-pomodoro-dark-gray dark:text-white h-8 pl-4 flex items-center"><p>Alarm</p></div>
 
                         <div id="alert-volume-wrapper" className="flex flex-col gap-2 p-6 pb-10">
                             <label htmlFor="volume-slider"
-                                   className="font-fredoka text-[26px] font-medium text-[#5F6379] max-[470px]:text-[6.5vw]">
+                                   className="font-fredoka text-[26px] font-medium text-pomodoro-blue-gray dark:text-pomodoro-hover max-[470px]:text-[6.5vw]">
                                 Alarm volume: {Math.round(alarmVolume * 100)}%
                             </label>
                             <input
@@ -110,11 +111,11 @@ function SettingsModal({ settings, timers, alarm, toggles }) {
                                 step="0.01"
                                 value={alarmVolume}
                                 onChange={handleVolume}
-                                className="w-full h-3 rounded-full border-1 border-[#5F6379] appearance-none cursor-pointer"
+                                className="w-full h-3 rounded-full border-1 border-pomodoro-blue-gray appearance-none cursor-pointer"
                             />
                         </div>
 
-                        <div className="bg-gray-200 h-8 pl-4 flex items-center"><p>Advanced</p></div>
+                        <div className="bg-gray-200 dark:bg-pomodoro-dark-gray dark:text-white h-8 pl-4 flex items-center"><p>Advanced</p></div>
 
                         <div id="button-toggle-wrapper" className="flex flex-col px-6 pb-2">
                             <ToggleButton text="Long break" isChecked={isLongBreakEnabled} onChange={() => {
@@ -123,6 +124,9 @@ function SettingsModal({ settings, timers, alarm, toggles }) {
                             }}/>
                             <ToggleButton text="Skip button" isChecked={isSkipButtonEnabled} onChange={() => {
                                 setIsSkipButtonEnabled(!isSkipButtonEnabled)
+                            }}/>
+                            <ToggleButton text="Dark mode" isChecked={isDarkModeEnabled} onChange={() => {
+                                setIsDarkModeEnabled(!isDarkModeEnabled)
                             }}/>
                         </div>
 
