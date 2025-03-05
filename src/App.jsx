@@ -32,7 +32,7 @@ function App() {
 
                 </div>
 
-                <div id="github-button-wrapper" className="fixed bottom-0 left-0">
+                <div id="github-button-wrapper" className="fixed bottom-2 left-2 [@media(max-height:300px)]:hidden">
                     <GithubButton/>
                 </div>
 
