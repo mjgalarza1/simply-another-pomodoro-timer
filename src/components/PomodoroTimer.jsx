@@ -5,8 +5,7 @@ import Restart from "../assets/imgs/icons/restart-svgrepo-com.svg"
 import Settings from "../assets/imgs/icons/settings-svgrepo-com.svg"
 import InfoButton from "../components/buttons/InfoButton.jsx"
 import PreAlarm from "../assets/sfx/pre-alarm-default.mp3"
-import DefaultAlarm from "../assets/sfx/alarm-default.mp3"
-
+import alarmSounds from "../utils/alarmSounds.js"
 import PlayerButton from "./buttons/PlayerButton.jsx";
 import PomodoroRadioButton from "./buttons/PomodoroRadioButton.jsx";
 import SettingsModal from "./modals/SettingsModal.jsx";
@@ -31,8 +30,9 @@ function PomodoroTimer({isDarkModeEnabled, setIsDarkModeEnabled}) {
     const [timeLeft, setTimeLeft] = useState(currentTimer * 60)
     const workerRef = useRef(null);
 
+    const [selectedAlarmSound, setSelectedAlarmSound] = useState(alarmSounds.defaultAlarm);
     const preAlarmRef = useRef(new Audio(PreAlarm))
-    const alarmRef = useRef(new Audio(DefaultAlarm))
+    const alarmRef = useRef(new Audio(selectedAlarmSound.src))
     const [alarmVolume, setAlarmVolume] = useState(1.0)
 
     const [settingsOpen, setSettingsOpen] = useState(false)
@@ -129,6 +129,13 @@ function PomodoroTimer({isDarkModeEnabled, setIsDarkModeEnabled}) {
         document.title = formatTime(getMinutesAsSeconds(currentTimer)) + " | Simply Another Pomodoro Timer"
     }
 
+    // Updates the selected alarm sound and sets the new audio source.
+    const handleAlarmSoundEffect = (alarmKey) => {
+        const newAlarmSound = alarmSounds[alarmKey]
+        alarmRef.current = new Audio(newAlarmSound.src)
+        setSelectedAlarmSound(newAlarmSound)
+    }
+
     // Opens the settings modal when the user presses the settings button.
     const handleSettings = () => {
         setSettingsOpen(true)
@@ -144,6 +151,7 @@ function PomodoroTimer({isDarkModeEnabled, setIsDarkModeEnabled}) {
             pomodoroDuration,
             shortBreakDuration,
             longBreakDuration,
+            selectedAlarmSound,
             alarmVolume,
             isLongBreakEnabled,
             isSkipButtonEnabled,
@@ -256,7 +264,9 @@ function PomodoroTimer({isDarkModeEnabled, setIsDarkModeEnabled}) {
             setPomodoroDuration(savedSettings.pomodoroDuration)
             setShortBreakDuration(savedSettings.shortBreakDuration)
             setLongBreakDuration(savedSettings.longBreakDuration)
+            setSelectedAlarmSound(savedSettings.selectedAlarmSound)
             setAlarmVolume(savedSettings.alarmVolume)
+            handleAlarmSoundEffect(savedSettings.selectedAlarmSound.key)
             setIsLongBreakEnabled(savedSettings.isLongBreakEnabled)
             setIsSkipButtonEnabled(savedSettings.isSkipButtonEnabled)
             setIsDarkModeEnabled(savedSettings.isDarkModeEnabled)
@@ -294,7 +304,8 @@ function PomodoroTimer({isDarkModeEnabled, setIsDarkModeEnabled}) {
                         handleSettingsTimerChange
                     }}
                     alarm={{
-                        alarmVolume, setAlarmVolume
+                        alarmVolume, setAlarmVolume,
+                        selectedAlarmSound, handleAlarmSoundEffect
                     }}
                     toggles={{
                         isLongBreakEnabled, setIsLongBreakEnabled,

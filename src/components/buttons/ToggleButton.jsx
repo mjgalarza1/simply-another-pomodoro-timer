@@ -2,7 +2,7 @@ const ToggleButton = ({text,onChange,isChecked}) => {
     return (
         <div className="flex flex-row justify-between py-4 justify-between max-[240px]:flex-col max-[470px]:py-2">
 
-            <p className="font-fredoka text-[26px] font-medium text-pomodoro-blue-gray dark:text-pomodoro-hover max-[470px]:text-[16px] ">
+            <p className="font-fredoka text-[22px] font-medium text-pomodoro-blue-gray dark:text-pomodoro-hover max-[470px]:text-[16px]">
                 {text}
             </p>
 

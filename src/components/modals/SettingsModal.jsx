@@ -1,7 +1,8 @@
 import TimerInput from "../TimerInput.jsx";
 import CloseButton from "../../assets/imgs/icons/close-svgrepo-com.svg";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import ToggleButton from "../buttons/ToggleButton.jsx";
+import alarmSounds from "../../utils/alarmSounds.js"
 
 function SettingsModal({ settings, timers, alarm, toggles }) {
     const {
@@ -12,7 +13,8 @@ function SettingsModal({ settings, timers, alarm, toggles }) {
     } = timers;
 
     const {
-        alarmVolume, setAlarmVolume
+        alarmVolume, setAlarmVolume,
+        selectedAlarmSound, handleAlarmSoundEffect
     } = alarm;
 
     const {
@@ -23,6 +25,8 @@ function SettingsModal({ settings, timers, alarm, toggles }) {
 
     const [isOpening, setIsOpening] = useState(true)
     const [isClosing, setIsClosing] = useState(false)
+
+    const alarmSoundRef = useRef(null)
 
     const handleVolume = (event) => {
         setAlarmVolume(event.target.value)
@@ -38,6 +42,21 @@ function SettingsModal({ settings, timers, alarm, toggles }) {
             handleClosing();
         }
     };
+
+    // Handles changing the alarm sound and playing a preview of the selected sound
+    const handleAlarmSoundChange = (event) => {
+        const alarmKey = event.target.value
+        handleAlarmSoundEffect(alarmKey)
+
+        if (alarmSoundRef.current) {
+            alarmSoundRef.current.pause()
+            alarmSoundRef.current.currentTime = 0
+        }
+
+        alarmSoundRef.current = new Audio(alarmSounds[alarmKey].src)
+        alarmSoundRef.current.volume = alarmVolume
+        alarmSoundRef.current.play().catch(error => console.error("An error occurred while trying to play audio:", error));
+    }
 
     // Dynamically changes the volume bar color.
     useEffect(() => {
@@ -98,24 +117,58 @@ function SettingsModal({ settings, timers, alarm, toggles }) {
 
                         <div className="bg-gray-200 dark:bg-pomodoro-dark-gray dark:text-white h-8 pl-4 flex items-center"><p>Alarm</p></div>
 
-                        <div id="alert-volume-wrapper" className="flex flex-col gap-2 p-6 pb-10">
-                            <label htmlFor="volume-slider"
-                                   className="font-fredoka text-[26px] font-medium text-pomodoro-blue-gray dark:text-pomodoro-hover max-[470px]:text-[6.5vw]">
-                                Alarm volume: {Math.round(alarmVolume * 100)}%
-                            </label>
-                            <input
-                                id="volume-slider"
-                                type="range"
-                                min="0"
-                                max="1"
-                                step="0.01"
-                                value={alarmVolume}
-                                onChange={handleVolume}
-                                className="w-full h-3 rounded-full border-1 border-pomodoro-blue-gray appearance-none cursor-pointer"
-                            />
+                        <div id="alarm-settings-container" className="flex flex-col px-6">
+                            <div id="alarm-sound-selection-wrapper"
+                                 className=
+                                     "flex flex-row justify-between items-center py-5 border-b-1 border-b-gray-200
+                                     max-[470px]:flex-col max-[470px]:items-start max-[470px]:gap-1.5
+                                     dark:border-b-pomodoro-dark-gray">
+
+                                <h1 id="alarm-sound-selection-title"
+                                    className="font-fredoka text-[22px] font-medium text-pomodoro-blue-gray dark:text-pomodoro-hover max-[470px]:text-[16px]">
+                                    Alarm sound
+                                </h1>
+
+                                <select
+                                    id="alarm-sound-selection"
+                                    className=
+                                        "bg-white border border-gray-300 text-gray-900 text-sm rounded-lg
+                                        focus:ring-blue-500 focus:border-blue-500 px-3 py-2 w-[230px] max-[470px]:w-full"
+                                    value={selectedAlarmSound.key}
+                                    onChange={handleAlarmSoundChange}
+                                >
+                                    {Object.keys(alarmSounds)
+                                        .map((soundKey) => (
+                                            <option key={soundKey} value={soundKey}>
+                                                {alarmSounds[soundKey].name}
+                                            </option>
+                                        ))}
+                                </select>
+
+                            </div>
+
+                            <div id="alert-volume-wrapper" className="flex flex-col gap-2 py-5 pb-10">
+                                <label htmlFor="volume-slider"
+                                       className="font-fredoka text-[22px] font-medium text-pomodoro-blue-gray dark:text-pomodoro-hover max-[470px]:text-[16px]">
+                                    Alarm volume: {Math.round(alarmVolume * 100)}%
+                                </label>
+                                <input
+                                    id="volume-slider"
+                                    type="range"
+                                    min="0"
+                                    max="1"
+                                    step="0.01"
+                                    value={alarmVolume}
+                                    onChange={handleVolume}
+                                    className="w-full h-3 rounded-full border-1 border-pomodoro-blue-gray appearance-none cursor-pointer"
+                                />
+                            </div>
                         </div>
 
-                        <div className="bg-gray-200 dark:bg-pomodoro-dark-gray dark:text-white h-8 pl-4 flex items-center"><p>Advanced</p></div>
+
+                        <div
+                            className="bg-gray-200 dark:bg-pomodoro-dark-gray dark:text-white h-8 pl-4 flex items-center">
+                            <p>Advanced</p></div>
 
                         <div id="button-toggle-wrapper" className="flex flex-col px-6 pb-2">
                             <ToggleButton text="Long break" isChecked={isLongBreakEnabled} onChange={() => {
