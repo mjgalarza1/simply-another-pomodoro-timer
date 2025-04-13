@@ -6,7 +6,7 @@ A minimalist and efficient Pomodoro Timer built with **React, Vite, and Tailwind
 Stay focused, boost productivity, and manage your work sessions effectively with a chill UI and smooth animations!
 
 ## 📸 Preview
-<img src="https://i.ibb.co/yngb03YP/Simply-Another-Pomodoro-Timer-Preview-new.gif" alt="Simply-Another-Pomodoro-Timer-Preview-new" border="0">
+<img src="public/Simply-Another-Pomodoro-Timer-Preview-new.gif" alt="Simply-Another-Pomodoro-Timer-Preview-new" border="0">
 
 ## 🚀 Live Demo
 🔗 [Try it here!](https://simplyanotherpomodorotimer.netlify.app)
